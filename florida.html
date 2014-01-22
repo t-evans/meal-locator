@@ -7,6 +7,7 @@
             body { height: 100%; margin: 0; padding: 0 }
             #map-canvas { height: 100% }
         </style>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuV-Jyz8N6b1fVUVCa1EnbPzgeCs9J5_o&sensor=true"></script>
         <script type="text/javascript">
             var districts = [
@@ -21,33 +22,56 @@
                         longitude: -80.713806
                     }
                 ],
-                addDistrictMarker = function(district, map) {
+                addDistrictMarker = function(district, map, infoWindow) {
                     var position = new google.maps.LatLng(district.latitude, district.longitude),
                         marker = new google.maps.Marker({
                             position: position,
                             map: map,
                             title: district.name
                         });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infoWindow.close()
+
+                        var $infoWindowContent = $(infoWindow.content),
+                            $title = $infoWindowContent.find('#title');
+                        $title.html(marker.title);
+                        $infoWindowContent.show();
+                        infoWindow.open(map, marker);
+                    });
                 },
-                addDistrictMarkers = function(map) {
+                addDistrictMarkers = function(map, infoWindow) {
                     for (var i=0; i<districts.length; i++) {
                         var district = districts[i];
-                        addDistrictMarker(district, map);
+                        addDistrictMarker(district, map, infoWindow);
                     }
                 },
                 initialize = function() {
                     var mapOptions = {
-                        center: new google.maps.LatLng(27.907058,-81.44165),
-                        zoom: 7
-                    };
-                    var map = new google.maps.Map(document.getElementById("map-canvas"),
-                            mapOptions);
-                    addDistrictMarkers(map);
+                            center: new google.maps.LatLng(27.907058,-81.44165),
+                            zoom: 7
+                        },
+                        map = new google.maps.Map(document.getElementById("map-canvas"),
+                            mapOptions),
+                        $infoWindowContent = $('#info-window'),
+                        infoWindow = new google.maps.InfoWindow({
+                            content: $infoWindowContent.get(0)
+                        });
+                    addDistrictMarkers(map, infoWindow);
                 }
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
     </head>
     <body>
-        <div id="map-canvas"/>
+        <div id="map-canvas"></div>
+        <div id="info-window" style="display: none;">
+            <h1 id="title"></h1>
+            <div id="bodyContent">
+                <p>A description of some sort...</p>
+                <p>
+                    And a link:
+                    <a href="http://foo.bar.com">http://foo.bar.com</a>
+                </p>
+            </div>
+        </div>
     </body>
 </html>
