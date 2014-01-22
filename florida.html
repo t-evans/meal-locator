@@ -32,9 +32,10 @@
                     google.maps.event.addListener(marker, 'click', function() {
                         infoWindow.close()
 
-                        var $infoWindowContent = $(infoWindow.content),
+                        var $infoWindowContent = $(infoWindow.getContent()),
                             $title = $infoWindowContent.find('#title');
                         $title.html(marker.title);
+                        $infoWindowContent.height($infoWindowContent.height());
                         $infoWindowContent.show();
                         infoWindow.open(map, marker);
                     });
