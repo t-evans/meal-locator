@@ -7,19 +7,43 @@
             body { height: 100%; margin: 0; padding: 0 }
             #map-canvas { height: 100% }
         </style>
-        <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuV-Jyz8N6b1fVUVCa1EnbPzgeCs9J5_o&sensor=true">
-        </script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuV-Jyz8N6b1fVUVCa1EnbPzgeCs9J5_o&sensor=true"></script>
         <script type="text/javascript">
-            var initialize = function() {
-                var mapOptions = {
-                    center: new google.maps.LatLng(27.907058,-81.44165),
-                    zoom: 7
-                };
-                var map = new google.maps.Map(document.getElementById("map-canvas"),
-                        mapOptions);
-
-            }
+            var districts = [
+                    {
+                        name: 'Alachua County Public Schools',
+                        latitude: 29.680894,
+                        longitude: -82.298584
+                    },
+                    {
+                        name: 'Brevard County',
+                        latitude: 28.323725,
+                        longitude: -80.713806
+                    }
+                ],
+                addDistrictMarker = function(district, map) {
+                    var position = new google.maps.LatLng(district.latitude, district.longitude),
+                        marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            title: district.name
+                        });
+                },
+                addDistrictMarkers = function(map) {
+                    for (var i=0; i<districts.length; i++) {
+                        var district = districts[i];
+                        addDistrictMarker(district, map);
+                    }
+                },
+                initialize = function() {
+                    var mapOptions = {
+                        center: new google.maps.LatLng(27.907058,-81.44165),
+                        zoom: 7
+                    };
+                    var map = new google.maps.Map(document.getElementById("map-canvas"),
+                            mapOptions);
+                    addDistrictMarkers(map);
+                }
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
     </head>
