@@ -46,6 +46,25 @@
                         addDistrictMarker(district, map, infoWindow);
                     }
                 },
+                setCurrentLocation = function(map) {
+                    var myloc = new google.maps.Marker({
+                        clickable: false,
+                        icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+                                                                        new google.maps.Size(22,22),
+                                                                        new google.maps.Point(0,18),
+                                                                        new google.maps.Point(11,11)),
+                        shadow: null,
+                        zIndex: 999,
+                        map: map
+                    });
+
+                    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+                        var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                        myloc.setPosition(me);
+                    }, function(error) {
+                        // ...
+                    });
+                },
                 initialize = function() {
                     var mapOptions = {
                             center: new google.maps.LatLng(27.907058,-81.44165),
@@ -58,6 +77,7 @@
                             content: $infoWindowContent.get(0)
                         });
                     addDistrictMarkers(map, infoWindow);
+                    setCurrentLocation(map);
                 }
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
