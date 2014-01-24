@@ -27,7 +27,7 @@ DEBUG = LOCAL = not env('HEROKU', False)
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*.nutrislice.com']
 
 
 # Application definition
