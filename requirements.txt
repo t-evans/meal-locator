@@ -3,3 +3,6 @@ djangorestframework==2.3.12
 dj-database-url==0.2.2
 South==0.8.4
 psycopg2==2.5.2
+
+# Provides a google-map picker & parser for address fields (https://pypi.python.org/pypi/django-google-maps)
+django-google-maps==0.2.2
