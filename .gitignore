@@ -1,2 +1,4 @@
 *.pyc
 
+
+/meal_locator/settings_troy.py
