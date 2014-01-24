@@ -13,7 +13,7 @@ import os
 
 env = lambda e, d='': os.environ[e] if os.environ.has_key(e) else d
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -90,9 +90,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+# S3 settings
+if not LOCAL:
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'nutrislice-meal-locator'
+STATIC_URL = "https://nutrislice-districts.s3.amazonaws.com/" # uncomment to use AWS
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATICFILES_DIRS = (
+    PROJECT_DIR + "/static",
+)
 
-STATIC_URL = '/static/'
-
+# List of finder classes that know how to find static files in various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', # looks in app_name/static directories
+)
