@@ -1,0 +1,9 @@
+{% extends "404.html" %}
+
+{% block title %}Permission Denied{% endblock %}
+{#{% block body_id %}error-403{% endblock %}#}
+{% block error_text %}
+    <p> <strong>Sorry!  You don't have permission to view this page. </strong></p>
+    <p>Please <a href="/login?next={{ request.path_info }}">log in</a> as a different user, or you can visit <a href="/">our home page</a>.  Good luck!</p>
+{% endblock %}
+{% block image %}{% endblock %}

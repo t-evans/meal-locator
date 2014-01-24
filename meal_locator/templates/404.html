@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en-En">
+
+<head>
+<title>{% block title %}Content Missing - Nutrislice{% endblock %}</title>
+<meta charset="UTF-8"/>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/error_and_maintenance.css" media="screen" />
+</head>
+
+<body id="{% block body_id %}error-404{% endblock %}">
+
+<div class="error contain">
+	<a id="branding" href="/"><img src="{{STATIC_URL}}images/nutrislice/nutrislice-logo-transparent.png" width="159" height="42" alt="Nutrislice logo" /></a>
+	<div id="error-txt">
+        {% block error_text %}
+            <p> <strong>Sorry!  We couldn’t find the page you were looking for. </strong></p><br>
+            <p>Not what you expected? Try checking your URL, and if that doesn’t work you can visit <a href="/">our home page</a> or send us an <a href="mail-to:support@nutrislice.com">email</a>.  Good luck!</p>
+        {% endblock %}
+    </div>
+    {% block image %}<img class="error" src="{{STATIC_URL}}images/404.jpg" width="672" height="480" />{% endblock %}
+    
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+
+/* RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	font-weight: normal;
+}
+body {
+	/*background: #e3ecf9 url('../images/manager/header-bg.png') left top repeat-x;*/
+	line-height: 1.3em;
+	font-size: 14px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+h2 {
+	clear: both;
+	padding: 0 0 15px;
+	font-size: 22px;
+	color: #333;
+}
+p {margin : 0 0 1em; color: #333;}
+th {text-align: left;}
+a {
+	text-decoration: none;
+	color: #3782cc;
+}
+a:hover {
+	text-decoration: underline;
+}
+ol, ul {
+	list-style: none;
+}
+strong {
+	font-weight: bold;
+}
+em {
+	font-style: italic;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	container: '';
+	container: none;
+}
+/* remember to define focus styles!
+:focus {
+	outline: 0;
+}*/
+
+/* Error Page Styling */
+
+#error-404, #error-500 { background-image: none; }
+#error-404 h1, #error-500 h1 { width: auto; font-size: 28px; }
+#error-404 #error-txt { padding: 12px 0 0; line-height: 1.6; }
+#error-404 #branding { float: left; margin: 0 15px 0 0; }
+#error-404 .error.contain,  #error-500 .error.contain {padding: 30px 0 0; width: 672px;}
+#error-404 .error.contain h1, #error-500 .error.contain h1 {background: none; line-height: 1.1; text-indent: 0;}
+#error-404 img.error, #error-500 img.error {float: left; margin: 0 30px 0 0;}
+#error-500 .error.contain ul {padding: 0 0 15px;}
+#error-500 .error.contain, #error-404 .error.contain {width: 700px;margin: 0 auto;}
+
+/* Maintenance Page */
+
+#maintenance {
+	background-color: #ffffff;
+	text-align: center;
+}
+
+#maintenance div.t1 {
+	/*background-image: url('../images/image-under-constr.jpg');*/
+	width: 950px;
+	height: 403px;
+	text-align: left;
+	margin: 0 auto;
+}
+
+#maintenance div.maintenance-gray-box {
+  	display: inline;
+
+	background-color:rgba(0,0,0,0.6);
+  	float: right;
+  	margin: 175px 44px 0 0;
+  	padding: 0 10px 15px 17px;
+  	width: 400px;
+  	height: 145px;
+}
+
+#maintenance .maintenance-messaging {
+	opacity: 1;
+}
+
+#maintenance h1 {
+  font-family: arial, helvetica, verdana, sans-serif;
+  color:#fff;
+  font-size: 36px;
+  margin: 15px 0;
+  line-height: 1em;
+}
+
+#maintenance p {
+  font-family: arial, helvetica, verdana, sans-serif;
+  color:#fff;
+  font-size: 17px;
+  float: left;
+}
+
+#maintenance img.keyline {
+ 	margin: 0 auto;
+ 	display: block;
+ }
+
