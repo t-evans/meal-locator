@@ -7,7 +7,7 @@ class MealLocationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
     }
-    list_display = ('name',)
+    list_display = ('name', 'address')
 
     class Media:
          js = (
