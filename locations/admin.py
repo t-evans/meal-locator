@@ -9,4 +9,10 @@ class MealLocationAdmin(admin.ModelAdmin):
     }
     list_display = ('name',)
 
+    class Media:
+         js = (
+             '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+             'customadmin/js/prevent_enter_backspace.js',
+             )
+
 admin.site.register(MealLocation, MealLocationAdmin)
