@@ -9,3 +9,5 @@ from rest_framework import fields
 class MealLocationSerializer(serializers.Serializer):
     name = fields.CharField(source='name')
     address = fields.CharField(source='address')
+    latitude = fields.FloatField(source='geolocation.lat')
+    longitude = fields.FloatField(source='geolocation.lon')
