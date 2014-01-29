@@ -1,0 +1,15 @@
+div.background {
+    /* The background image is here, rather than on the body tag, to get
+     * around an Android issue where the background sometimes won't fill
+     * the full scroll area after returning to the home page (leaving a
+     * black area at the bottom after the user scrolls). */
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    /*background-size: cover; - Cover looks bad if someone has a long list of schools.  It has to zoom the image way in.*/
+    background-size: auto auto;
+    background: #e9e9e9 url("../images/mobile/background_tileable.jpg") repeat fixed;
+}
