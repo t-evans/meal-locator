@@ -1,3 +1,7 @@
+
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+
 div.background {
     /* The background image is here, rather than on the body tag, to get
      * around an Android issue where the background sometimes won't fill
@@ -12,4 +16,8 @@ div.background {
     /*background-size: cover; - Cover looks bad if someone has a long list of schools.  It has to zoom the image way in.*/
     background-size: auto auto;
     background: #e9e9e9 url("../images/mobile/background_tileable.jpg") repeat fixed;
+}
+
+#map-canvas {
+    height: 100%;
 }

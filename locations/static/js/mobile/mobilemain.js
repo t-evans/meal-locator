@@ -4,6 +4,7 @@ requirejs.config({
     paths: {
         //directories
         lib: "../lib",
+        models: "../models",
 
         //libs
         jquery: "../lib/require-jquery.min",
@@ -47,13 +48,35 @@ require([
     'jquery',
     'backbone',
     'app',
+    'models/MealLocation',
+    'views/GoogleMapView',
     'lib/fastclick.min'
 ],
-function( $, Backbone, app, FastClick) {
+function( $, Backbone, app, MealLocation, GoogleMapView, FastClick) {
     window.app = app;
 
     $(function() {
         FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
-        $('#page-content').html('Hello World!');
+        var MealLocations = Backbone.Collection.extend({
+                model: MealLocation,
+                url: '/api/locations/meals/'
+            }),
+            mealLocations = new MealLocations([]);
+        mealLocations.fetch({
+            success: function(model, response) {
+                var mealLocationMapView = new GoogleMapView({markerModels: model.models});
+                mealLocationMapView.render();
+                //$('#page-content').html(mealLocationMapView.$el); // I haven't had any luck getting the map to render in an other-than-top-level dom element.
+                $('body').prepend(mealLocationMapView.$el);
+            },
+            error: function() {
+                var $msg = $('<p>We\'re sorry, we encountered an unexpected error while attempting to retrieve the current meal locations. Click <a href="javascript:void(0);">here</a> to try again.  If the problem persists, please contact support@nutrislice.com.</p>'),
+                    $reloadLink = $msg.find('a');
+                $reloadLink.click(function() {
+                    location.reload();
+                });
+                $('#page-content').html($msg);
+            }
+        });
     });
 });

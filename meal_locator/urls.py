@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/locations/?', include('locations.api.urls')),
 
+    url(r'^$', RedirectView.as_view(url='/locations/')),
     url(r'^locations/?', include('locations.urls')),
 
     url(r'^robots\.txt$', TextPlainView.as_view(template_name='robots.txt')),
