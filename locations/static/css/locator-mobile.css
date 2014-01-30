@@ -1,6 +1,31 @@
+@charset "utf-8";
+/* RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	font-weight: normal;
+	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
 
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
+#page-content {
+    height: 100%;
+    width: 100%;
+}
 
 div.background {
     /* The background image is here, rather than on the body tag, to get
@@ -18,6 +43,12 @@ div.background {
     background: #e9e9e9 url("../images/mobile/background_tileable.jpg") repeat fixed;
 }
 
+#map-instructions {
+    padding: 10px;
+    line-height: 1.2;
+    font-weight: bold;
+    background-color: #F3F0E7;
+}
 #map-canvas {
     height: 100%;
 }
