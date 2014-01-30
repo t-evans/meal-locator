@@ -56,7 +56,7 @@ require([
 ],
 function( $, Backbone, app, MealLocation, GoogleMapView, FastClick) {
     window.app = app;
-    app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') || false;
+    app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') === 'true' || false;
 
     $(function() {
         FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
