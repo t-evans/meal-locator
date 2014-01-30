@@ -1,14 +1,15 @@
 /**
- * Copyright 2012, Nutrislice Inc.  All rights reserved.
+ * Copyright 2014, Nutrislice Inc.  All rights reserved.
  */
 define([
     'jquery',
     'backbone',
     'underscore',
     'app',
+    'views/GoogleMapInfoWindowView',
     'lib/jockey'
 ],
-function($, Backbone, _, app) {
+function($, Backbone, _, app, GoogleMapInfoWindowView) {
     return Backbone.View.extend({
         id: 'map-canvas',
         events: {
@@ -18,6 +19,7 @@ function($, Backbone, _, app) {
         allLatitudes: [],
         allLongitudes: [],
         currentLocationMarker: null,
+        infoWindowView: null,
         initialize: function(options) {
             _.bindAll(this, 'updateCurrentPositionOnMap');
             var that = this;
@@ -27,6 +29,8 @@ function($, Backbone, _, app) {
             Jockey.on("updateUserLocation", function(payload) {
                 that.updateCurrentPositionOnMap(that.map, payload);
             });
+            this.infoWindowView = new GoogleMapInfoWindowView({mapView: this});
+            this.infoWindowView.on('show', this.infoWindowShown, this);
         },
         extractAllLatitudesAndLongitudes: function() {
             this.allLatitudes = this.markerModels.map(function(model) {
@@ -39,28 +43,23 @@ function($, Backbone, _, app) {
             });
             this.allLongitudes = _.without(this.allLongitudes, null);
         },
-        addMarker: function(markerModel, map, infoWindow) {
-            var position = new google.maps.LatLng(markerModel.latitude(), markerModel.longitude()),
+        addMarker: function(markerModel, map) {
+            var that = this,
+                position = new google.maps.LatLng(markerModel.latitude(), markerModel.longitude()),
                 marker = new google.maps.Marker({
                     position: position,
                     map: map,
                     title: markerModel.name()
                 });
             google.maps.event.addListener(marker, 'click', function() {
-                infoWindow.close()
-
-                var $infoWindowContent = $(infoWindow.getContent()),
-                    $title = $infoWindowContent.find('#title');
-                $title.html(marker.title);
-                $infoWindowContent.height($infoWindowContent.height());
-                $infoWindowContent.show();
-                infoWindow.open(map, marker);
+                if (that.infoWindowView)
+                    that.infoWindowView.open(marker, markerModel);
             });
         },
-        addMarkers: function(markerModels, map, infoWindow) {
+        addMarkers: function(markerModels, map) {
             for (var i=0; i<markerModels.length; i++) {
                 var markerModel = markerModels[i];
-                this.addMarker(markerModel, map, infoWindow);
+                this.addMarker(markerModel, map);
             }
         },
         updateCurrentPositionOnMap: function(map, position, mapDimentions) {
@@ -173,20 +172,17 @@ function($, Backbone, _, app) {
                     center: this.calculateCenterOfMarkers()
                 },
                 map = new google.maps.Map(this.el, mapOptions),
-                //map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions),
-                $infoWindowContent = $('#info-window'),
-                infoWindow = new google.maps.InfoWindow({
-                    content: $infoWindowContent.get(0)
-                }),
                 mapDimentions = {
                     height: this.$el.height() > 0 ? this.$el.height()-15 : $(window).height() - 15,
                     width: this.$el.width() > 0 ? this.$el.width()-15 : $(window).width() - 15
                 };
             this.map = map;
-            this.addMarkers(this.markerModels, map, infoWindow);
+            this.addMarkers(this.markerModels, map);
             map.setZoom(this.calculateAppropriateZoomLevel(mapDimentions));
             this.setCurrentLocationIfPossible(map, mapDimentions);
             return this;
+        },
+        infoWindowShown: function() {
         }
     });
 });

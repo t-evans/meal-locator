@@ -1,5 +1,5 @@
 /**
- * Copyright 2012, Nutrislice Inc.  All rights reserved.
+ * Copyright 2014, Nutrislice Inc.  All rights reserved.
  */
 define([
     'jquery',
