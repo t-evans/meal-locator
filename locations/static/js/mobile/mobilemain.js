@@ -4,6 +4,7 @@ requirejs.config({
     paths: {
         //directories
         lib: "../lib",
+        util: "../util",
         models: "../models",
 
         //libs
@@ -50,10 +51,12 @@ require([
     'app',
     'models/MealLocation',
     'views/GoogleMapView',
-    'lib/fastclick.min'
+    'lib/fastclick.min',
+    'util/querystring-utils'
 ],
 function( $, Backbone, app, MealLocation, GoogleMapView, FastClick) {
     window.app = app;
+    app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') || false;
 
     $(function() {
         FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
