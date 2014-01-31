@@ -63,8 +63,12 @@ function($, Backbone, _, templateText, mobileTemplateText) {
             this.infoWindow.open(mapMarker.getMap(), mapMarker);
         },
         close: function() {
-            if ($.browser.mobile)
-                this.$el.remove();
+            if ($.browser.mobile){
+                var $infoWindow = this.$el;
+                $infoWindow.slideDown(200, function() {
+                    $infoWindow.remove();
+                });
+            }
             else
                 this.infoWindow.close();
         },

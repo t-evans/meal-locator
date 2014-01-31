@@ -62,6 +62,7 @@ div.background {
  */
 #map-info-window.mobile {
     padding: 10px;
+    border-top: 1px solid #BDBDBA;
 }
 #map-info-window .title {
     font-weight: bold;

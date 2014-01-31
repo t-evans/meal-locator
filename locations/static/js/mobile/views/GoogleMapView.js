@@ -7,7 +7,8 @@ define([
     'underscore',
     'app',
     'views/GoogleMapInfoWindowView',
-    'lib/jockey'
+    'lib/jockey',
+    'lib/jquery.dark-overlay'
 ],
 function($, Backbone, _, app, GoogleMapInfoWindowView) {
     return Backbone.View.extend({
@@ -197,7 +198,11 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             // Show the info window
             $body.animate({
                 'scrollTop':   this.infoWindowView.$el.offset().top
-            }, 250);
+            }, 700);
+            that.$el.darken({
+                'opacity': 0.25,
+                'fadeInDuration': 700
+            });
 
             // Center & zoom in the map
             var centerPosition = new google.maps.LatLng(this.latestSelectedMarker.position.lat() + 0.025, this.latestSelectedMarker.position.lng())
@@ -216,6 +221,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                         var currentZoom = that.map.getZoom();
                         if (currentZoom == infoWindowZoomLevel && currentZoom > previousZoom) // Only restore the previous zoom level if the user hasn't messed with it.
                             that.map.setZoom(previousZoom);
+                        that.$el.undarken(200);
                     }
     //                else
     //                    console.log('' + $body.scrollTop() + ' is NOT less than ' + closeInfoWindowScrollPos);
