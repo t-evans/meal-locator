@@ -7,7 +7,8 @@ define([
     'underscore',
     'app',
     'models/MealLocation',
-    'views/GoogleMapView'
+    'views/GoogleMapView',
+    'lib/jquery.browser-info'
 ],
 function($, Backbone, _, app, MealLocation, GoogleMapView) {
     return Backbone.View.extend({
@@ -37,13 +38,30 @@ function($, Backbone, _, app, MealLocation, GoogleMapView) {
         render: function() {
             return this;
         },
+        getMaxMapHeight: function(mapInstructionsHeight) {
+            var maxMapHeight = $(window).height() - mapInstructionsHeight;
+            if ($.browser.isIosDevice) {
+                if (app.isRunningInWrapperApp) {
+                    maxMapHeight -= 20;
+                }
+                else {
+                    if ($.browser.isIos7) {
+                        maxMapHeight -= 80;
+                    }
+                    else
+                        maxMapHeight -= 65;
+                }
+            }
+            return maxMapHeight;
+        },
         renderMap: function() {
             var $pageContent = $('#page-content');
             $pageContent.html(this.$mapInstructions);
             var mapInstructionsHeight = this.$mapInstructions.outerHeight(),
+                maxMapHeight = this.getMaxMapHeight(mapInstructionsHeight),
                 mealLocationMapView = new GoogleMapView({
                     markerModels: this.mealLocations.models,
-                    maxHeight: $(window).height() - mapInstructionsHeight
+                    maxHeight: maxMapHeight
                 });
             $pageContent.append(mealLocationMapView.render().$el);
         }
