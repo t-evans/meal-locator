@@ -197,7 +197,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
 
             // Show the info window
             $body.animate({
-                'scrollTop':   this.infoWindowView.$el.offset().top
+                'scrollTop': this.infoWindowView.$el.offset().top
             }, 700);
             that.$el.darken({
                 'opacity': 0.25,
@@ -216,8 +216,14 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                     if ($body.scrollTop() < closeInfoWindowScrollPos) {
                         $window.unbind('scroll');
                         console.log('' + $body.scrollTop() + ' is less than ' + closeInfoWindowScrollPos + '. Closing Info window...');
+
+                        // Finish scrolling
+                        $body.animate({
+                            'scrollTop': 0
+                        }, 200);
                         that.infoWindowView.close();
 
+                        // Restore previous zoom
                         var currentZoom = that.map.getZoom();
                         if (currentZoom == infoWindowZoomLevel && currentZoom > previousZoom) // Only restore the previous zoom level if the user hasn't messed with it.
                             that.map.setZoom(previousZoom);
