@@ -7,7 +7,7 @@ define([
     'underscore',
     'text!templates/GoogleMapInfoWindowView.jst',
     'text!templates/MobileMapInfoWindowView.jst',
-    'lib/jquery.detectmobilebrowser'
+    'lib/jquery.browser-info'
 ],
 function($, Backbone, _, templateText, mobileTemplateText) {
     return Backbone.View.extend({
@@ -27,7 +27,7 @@ function($, Backbone, _, templateText, mobileTemplateText) {
         open: function(mapMarker, markerData) {
             var that = this;
             markerData.lookupAddressByCoords();
-            if ($.browser.mobile) {
+            if ($.browser.isMobileDevice) {
                 var html = this.mobileTemplate({locationData: markerData}),
                     $currentInfoWindow = $('#map-info-window');
 
@@ -63,7 +63,7 @@ function($, Backbone, _, templateText, mobileTemplateText) {
             this.infoWindow.open(mapMarker.getMap(), mapMarker);
         },
         close: function() {
-            if ($.browser.mobile){
+            if ($.browser.isMobileDevice){
                 var $infoWindow = this.$el;
                 $infoWindow.slideDown(200, function() {
                     $infoWindow.remove();
@@ -74,7 +74,7 @@ function($, Backbone, _, templateText, mobileTemplateText) {
         },
         height: function() {
             var height;
-            if ($.browser.mobile)
+            if ($.browser.isMobileDevice)
                 height = this.$el.height();
             else
                 height = 0; // Non-mobile info windows are shown directly on the map.
