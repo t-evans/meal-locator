@@ -38,10 +38,13 @@ function($, Backbone, _, app, MealLocation, GoogleMapView) {
             return this;
         },
         renderMap: function() {
-            var mealLocationMapView = new GoogleMapView({markerModels: this.mealLocations.models}),
-                $pageContent = $('#page-content');
+            var $pageContent = $('#page-content');
             $pageContent.html(this.$mapInstructions);
-            mealLocationMapView.$el.height($(window).height() - this.$mapInstructions.height() - 20);
+            var mapInstructionsHeight = this.$mapInstructions.outerHeight(),
+                mealLocationMapView = new GoogleMapView({
+                    markerModels: this.mealLocations.models,
+                    maxHeight: $(window).height() - mapInstructionsHeight
+                });
             $pageContent.append(mealLocationMapView.render().$el);
         }
     });

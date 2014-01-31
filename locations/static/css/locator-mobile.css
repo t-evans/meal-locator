@@ -22,6 +22,9 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
+div.clear {
+    clear:both;
+}
 #page-content {
     height: 100%;
     width: 100%;
@@ -51,4 +54,55 @@ div.background {
 }
 #map-canvas {
     height: 100%;
+}
+
+
+/*
+ * Map info window
+ */
+#map-info-window.mobile {
+    padding: 10px;
+}
+#map-info-window .title {
+    font-weight: bold;
+    font-size: 17px;
+    padding-bottom: 3px;
+}
+#map-info-window .address {
+    font-weight: lighter;
+    font-size: 13px;
+    line-height: 1.0;
+}
+#map-info-window .line-separator {
+    padding-top: 5px;
+    margin-bottom: 10px;
+    height:1px;
+    border-bottom:1px solid #D7D5CD;
+}
+#map-info-window .additional-details-box {
+    border: 1px solid #D3D0C5;
+    background-color: #FFFEFE;
+    margin-top: 5px;
+}
+#map-info-window .additional-details-box .clock-icon {
+    width: 46px;
+    height: 100%;
+    background-size: auto auto;
+    background: #F3F0E7 url("../images/mobile/clock.png") no-repeat top center;
+}
+#map-info-window .additional-details-box .additional-details {
+    padding: 8px 4px 5px 5px;
+}
+#map-info-window .additional-details .hours-of-operation .lbl {
+    font-weight: 500;
+    color: #1DA24B;
+}
+#map-info-window .additional-details .hours-of-operation .value {
+    color: #9F9F9F;
+    font-size: 14;
+}
+#map-info-window .additional-details .notes {
+    color: #787878;
+    font-size: 12;
+    line-height: 1.1;
 }

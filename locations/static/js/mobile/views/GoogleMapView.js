@@ -16,21 +16,25 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
         },
         map: null,
         markerModels: [],
+        maxHeight: null,
         allLatitudes: [],
         allLongitudes: [],
         currentLocationMarker: null,
         infoWindowView: null,
+        latestSelectedMarker: null,
         initialize: function(options) {
             _.bindAll(this, 'updateCurrentPositionOnMap');
             var that = this;
             this.markerModels = options.markerModels;
+            this.maxHeight = options.maxHeight;
+            this.$el.height(this.maxHeight);
             that.extractAllLatitudesAndLongitudes();
 
             Jockey.on("updateUserLocation", function(payload) {
                 that.updateCurrentPositionOnMap(that.map, payload);
             });
             this.infoWindowView = new GoogleMapInfoWindowView({mapView: this});
-            this.infoWindowView.on('show', this.infoWindowShown, this);
+            this.infoWindowView.on('showMobileInfoWindow', this.mobileInfoWindowShown, this);
         },
         extractAllLatitudesAndLongitudes: function() {
             this.allLatitudes = this.markerModels.map(function(model) {
@@ -52,6 +56,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                     title: markerModel.name()
                 });
             google.maps.event.addListener(marker, 'click', function() {
+                that.latestSelectedMarker = marker;
                 if (that.infoWindowView)
                     that.infoWindowView.open(marker, markerModel);
             });
@@ -182,7 +187,40 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             this.setCurrentLocationIfPossible(map, mapDimentions);
             return this;
         },
-        infoWindowShown: function() {
+        mobileInfoWindowShown: function() {
+            var that = this,
+                $window = $(window),
+                $body = $(document.body),
+                closeInfoWindowScrollPos = 160,
+                infoWindowZoomLevel = 13;
+
+            // Show the info window
+            $body.animate({
+                'scrollTop':   this.infoWindowView.$el.offset().top
+            }, 250);
+
+            // Center & zoom in the map
+            var centerPosition = new google.maps.LatLng(this.latestSelectedMarker.position.lat() + 0.025, this.latestSelectedMarker.position.lng())
+            this.map.setCenter(centerPosition);
+            var previousZoom = this.map.getZoom();
+            this.map.setZoom(infoWindowZoomLevel);
+
+            // Detect when the user pushes the info window out of the way - restore the previous zoom level and remove the info window.
+            setTimeout(function() {
+                $window.bind('scroll', function() {
+                    if ($body.scrollTop() < closeInfoWindowScrollPos) {
+                        $window.unbind('scroll');
+                        console.log('' + $body.scrollTop() + ' is less than ' + closeInfoWindowScrollPos + '. Closing Info window...');
+                        that.infoWindowView.close();
+
+                        var currentZoom = that.map.getZoom();
+                        if (currentZoom == infoWindowZoomLevel && currentZoom > previousZoom) // Only restore the previous zoom level if the user hasn't messed with it.
+                            that.map.setZoom(previousZoom);
+                    }
+    //                else
+    //                    console.log('' + $body.scrollTop() + ' is NOT less than ' + closeInfoWindowScrollPos);
+                });
+            }, 500);
         }
     });
 });

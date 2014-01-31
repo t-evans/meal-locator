@@ -15,6 +15,9 @@ requirejs.config({
         //require plugins
         text: "../lib/text",
 
+        // other plugins
+        dotimeout: "../lib/jquery.ba-dotimeout.min",
+
         // aliases
         app: "mobileapp"
 
