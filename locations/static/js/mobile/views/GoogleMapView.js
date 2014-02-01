@@ -193,7 +193,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                 $window = $(window),
                 $body = $(document.body),
                 closeInfoWindowScrollPos = 160,
-                infoWindowZoomLevel = 13;
+                infoWindowZoomLevel = 16;
 
             // Show the info window
             $body.animate({
@@ -206,7 +206,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             });
 
             // Center & zoom in the map
-            var centerPosition = new google.maps.LatLng(this.latestSelectedMarker.position.lat() + 0.025, this.latestSelectedMarker.position.lng())
+            var centerPosition = new google.maps.LatLng(this.latestSelectedMarker.position.lat() + 0.0025, this.latestSelectedMarker.position.lng())
             this.map.setCenter(centerPosition);
             var previousZoom = this.map.getZoom();
             this.map.setZoom(infoWindowZoomLevel);
