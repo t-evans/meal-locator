@@ -201,7 +201,8 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             }, 700);
             that.$el.darken({
                 'opacity': 0.25,
-                'fadeInDuration': 700
+                'fadeInDuration': 700,
+                'useRadialGradient': true
             });
 
             // Center & zoom in the map

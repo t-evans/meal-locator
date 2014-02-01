@@ -37,9 +37,10 @@
                 'width': $elementToDarken.outerWidth(),
                 'height': $elementToDarken.outerHeight()
             });
-//            $overlay.css('background-color', 'rgba(0,0,0,0.5)');
             if (opts.allowClickThrough)
                 $overlay.css('pointer-events', 'none');
+            if (opts.useRadialGradient)
+                $overlay.css('background-image', '-webkit-radial-gradient(50% 80%, circle farthest-side, rgba(255,255,255,' + opts.opacity + ') 80%, rgba(0,0,0,' + opts.opacity + ') 100%)');
             $elementToDarken.data(OVERLAY_ID_KEY, overlayId);
 
             $overlay.hide();
@@ -57,7 +58,8 @@
         var options = $.extend({
             'opacity': 0.5,
             'allowClickThrough': true,
-            'fadeInDuration': 0
+            'fadeInDuration': 0,
+            'useRadialGradient': false
         }, opts);
         $$.each(function() {
             addDarkOverlay($(this), options);
