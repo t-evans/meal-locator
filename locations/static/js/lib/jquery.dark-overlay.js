@@ -21,7 +21,9 @@
                 elementZIndex = 0;
             var elementOffset = $elementToDarken.offset(),
                 $overlay = $('<div id="' + overlayId + '"></div>'),
-                existingOverlayId = $elementToDarken.data(OVERLAY_ID_KEY);
+                existingOverlayId = $elementToDarken.data(OVERLAY_ID_KEY),
+                top = opts.includeMargins ? elementOffset.top - parseInt($elementToDarken.css('marginTop')) : elementOffset.top,
+                left = opts.includeMargins ? elementOffset.left - parseInt($elementToDarken.css('marginLeft')) : elementOffset.left;
 
             // Check if there is already an overlay, and remove it.
             if (existingOverlayId)
@@ -32,15 +34,15 @@
                 'background-color': 'rgba(0,0,0,' + opts.opacity + ')',
                 'z-index': elementZIndex + 1,
                 'position': 'absolute',
-                'top': elementOffset.top,
-                'left': elementOffset.left,
-                'width': $elementToDarken.outerWidth(),
-                'height': $elementToDarken.outerHeight()
+                'top': top,
+                'left': left,
+                'width': $elementToDarken.outerWidth(opts.includeMargins),
+                'height': $elementToDarken.outerHeight(opts.includeMargins)
             });
             if (opts.allowClickThrough)
                 $overlay.css('pointer-events', 'none');
             if (opts.useRadialGradient)
-                $overlay.css('background-image', '-webkit-radial-gradient(50% 80%, circle farthest-side, rgba(255,255,255,' + opts.opacity + ') 80%, rgba(0,0,0,' + opts.opacity + ') 100%)');
+                $overlay.css('background-image', '-webkit-radial-gradient(50% 80%, circle farthest-side, rgba(255,255,255,' + opts.opacity + ') 0%, rgba(0,0,0,' + opts.opacity + ') 100%)');
             $elementToDarken.data(OVERLAY_ID_KEY, overlayId);
 
             $overlay.hide();
@@ -59,7 +61,8 @@
             'opacity': 0.5,
             'allowClickThrough': true,
             'fadeInDuration': 0,
-            'useRadialGradient': false
+            'useRadialGradient': false,
+            'includeMargins': false
         }, opts);
         $$.each(function() {
             addDarkOverlay($(this), options);
