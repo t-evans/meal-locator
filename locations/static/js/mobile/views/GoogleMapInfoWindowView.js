@@ -108,11 +108,14 @@ function($, Backbone, _, templateText, mobileTemplateText) {
         },
         getDirections: function(event) {
             var $btn = $(event.target),
-                destinationStr = $btn.data('position'),
-                directionsUrl = 'http://maps.google.com/maps?daddr=' + destinationStr,
+                addressStr = this.$('.address').html().replace('<br>', ', '),
+                //destinationStr = $btn.data('position'),
+                directionsUrl = 'http://maps.google.com/maps?daddr=' + addressStr,
                 currentUserPosition = this.mapView.getCurrentPosition();
             if (currentUserPosition)
-                directionsUrl += '&saddr=' + currentUserPosition.toString()
+                directionsUrl += '&saddr=' + currentUserPosition.toString();
+            if (app.isRunningInWrapperApp)
+                directionsUrl += '&openInNewWindow=true';
             window.open(directionsUrl, target="_blank");
         }
     });
