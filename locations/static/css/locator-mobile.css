@@ -25,6 +25,10 @@ body { height: 100%; margin: 0; padding: 0 }
 div.clear {
     clear:both;
 }
+.hidden {
+    display: none;
+}
+
 #page-content {
     height: 100%;
     width: 100%;
@@ -73,6 +77,7 @@ div.background {
     font-weight: lighter;
     font-size: 13px;
     line-height: 1.0;
+    margin-bottom: 10px;
 }
 #map-info-window .line-separator {
     padding-top: 5px;
@@ -106,4 +111,22 @@ div.background {
     color: #787878;
     font-size: 12;
     line-height: 1.1;
+}
+#map-info-window .distance-from-user {
+    float: left;
+    padding-left: 20px;
+    padding-top: 6px;
+    font-size: 11px;
+    background: url("../images/icon-location.png") 0px 4px / 19px 19px no-repeat;
+}
+#map-info-window .get-directions-btn {
+    float: right;
+    border-radius: 3px;
+    width: 200px;
+    padding: 4px 0px 4px 0px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    color: #FAECE6;
+    background-color: #1B9244;
 }

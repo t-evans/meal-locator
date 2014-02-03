@@ -42,6 +42,11 @@ function(_, Backbone, app) {
         },
         longitude: function() {
             return this.get('longitude');
+        },
+        positionStr: function() {
+            if (this.latitude() == null || this.longitude() == null)
+                return null;
+            return '' + this.latitude() + ',' + this.longitude()
         }
     });
 });

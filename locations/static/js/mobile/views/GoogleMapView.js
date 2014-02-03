@@ -96,6 +96,12 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                 this.updateMapZoomLevelToIncludeCurrentUserPosition(map, position, mapDimentions);
             }
         },
+        getCurrentPosition: function() {
+            if (!this.currentLocationMarker)
+                return null;
+            else
+                return this.currentLocationMarker.getPosition();
+        },
         setCurrentLocationIfPossible: function(map, mapDimentions) {
             var that = this;
 

@@ -10,9 +10,11 @@ define([
     'lib/jquery.browser-info'
 ],
 function($, Backbone, _, templateText, mobileTemplateText) {
+    var distanceMatrixService  = new google.maps.DistanceMatrixService();
     return Backbone.View.extend({
         id: 'map-info-window',
         events: {
+            'click .get-directions-btn': 'getDirections'
         },
         template: _.template(templateText),
         mobileTemplate: _.template(mobileTemplateText),
@@ -51,6 +53,30 @@ function($, Backbone, _, templateText, mobileTemplateText) {
                     that.openNonMobileInfoWindow(mapMarker, model);
                 }, this);
             }
+            this.updateDistanceSection(markerData);
+        },
+        updateDistanceSection: function(markerData) {
+            var that = this,
+                currentUserPosition = this.mapView.getCurrentPosition();
+            if (currentUserPosition) {
+                var currentPositionStr = currentUserPosition.toString(),
+                    destinationStr = markerData.positionStr(),
+                    distanceRequest = {
+                        origins: [currentUserPosition],
+                        destinations: [new google.maps.LatLng(markerData.latitude(), markerData.longitude())],
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        unitSystem: google.maps.UnitSystem.IMPERIAL
+                    };
+                distanceMatrixService.getDistanceMatrix(distanceRequest, function(response, status) {
+                    if (status == google.maps.DistanceMatrixStatus.OK) {
+                        var distanceStr = response.rows[0].elements[0].distance.text;
+                        that.$('.distance-from-user').html(distanceStr + ' away').show();
+                    }
+                    else {
+                        console.log('Unable to get distance to marker: ' + status);
+                    }
+                });
+            }
         },
         openNonMobileInfoWindow: function(mapMarker, markerData) {
             this.infoWindow.close();
@@ -79,6 +105,15 @@ function($, Backbone, _, templateText, mobileTemplateText) {
             else
                 height = 0; // Non-mobile info windows are shown directly on the map.
             return height;
+        },
+        getDirections: function(event) {
+            var $btn = $(event.target),
+                destinationStr = $btn.data('position'),
+                directionsUrl = 'http://maps.google.com/maps?daddr=' + destinationStr,
+                currentUserPosition = this.mapView.getCurrentPosition();
+            if (currentUserPosition)
+                directionsUrl += '&saddr=' + currentUserPosition.toString()
+            window.open(directionsUrl, target="_blank");
         }
     });
 });
