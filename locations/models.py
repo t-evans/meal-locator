@@ -31,7 +31,7 @@ TIME_FORMAT = "%-I:%M%p"
 
 class OperatingHours(models.Model):
     meal_location = models.ForeignKey(MealLocation, related_name='operating_hours')
-    weekday_from = models.IntegerField(choices=WEEKDAYS, unique=True)
+    weekday_from = models.IntegerField(choices=WEEKDAYS)
     weekday_to = models.IntegerField(choices=WEEKDAYS)
     from_hour = models.TimeField(verbose_name='from')
     to_hour = models.TimeField(verbose_name='to')
