@@ -10,14 +10,21 @@ class MealLocation(models.Model):
     geolocation = map_fields.GeoLocationField(max_length=100)
 
 
+MON = 1
+TUES = 2
+WED = 3
+THUR = 4
+FRI = 5
+SAT = 6
+SUN = 7
 WEEKDAYS = [
-    (1, _("Monday")),
-    (2, _("Tuesday")),
-    (3, _("Wednesday")),
-    (4, _("Thursday")),
-    (5, _("Friday")),
-    (6, _("Saturday")),
-    (7, _("Sunday")),
+    (MON, _("Monday")),
+    (TUES, _("Tuesday")),
+    (WED, _("Wednesday")),
+    (THUR, _("Thursday")),
+    (FRI, _("Friday")),
+    (SAT, _("Saturday")),
+    (SUN, _("Sunday")),
 ]
 TIME_FORMAT = "%-I:%M%p"
 
@@ -29,7 +36,30 @@ class OperatingHours(models.Model):
     from_hour = models.TimeField(verbose_name='from')
     to_hour = models.TimeField(verbose_name='to')
 
+    def _get_short_weekday_str(self, weekday_str):
+        if (self.weekday_from in [MON, WED, FRI]):
+            weekday_from_display_str = weekday_str[0:1]
+        elif (self.weekday_from in [TUES, THUR, SAT, SUN]):
+            weekday_from_display_str = weekday_str[0:2]
+        return weekday_from_display_str
+
+    def get_weekday_from_short_display_str(self):
+        weekday_from_display_str = self._get_short_weekday_str(self.get_weekday_from_display())
+        return weekday_from_display_str
+
+    def get_weekday_to_short_display_str(self):
+        weekday_to_display_str = self._get_short_weekday_str(self.get_weekday_to_display())
+        return weekday_to_display_str
+
+    def to_short_string(self):
+        weekday_from_display_str = self.get_weekday_from_short_display_str()
+        weekday_to_display_str = self.get_weekday_to_short_display_str()
+        formatted_from = self.from_hour.strftime(TIME_FORMAT).lower()
+        formatted_to = self.to_hour.strftime(TIME_FORMAT).lower()
+        if weekday_from_display_str == weekday_to_display_str:
+            return '%s %s-%s' % (weekday_from_display_str, formatted_from, formatted_to)
+        else:
+            return '%s-%s %s-%s' % (weekday_from_display_str, weekday_to_display_str, formatted_from, formatted_to)
+
     def __unicode__(self):
-        formatted_from = self.from_hour.strftime(TIME_FORMAT)
-        formatted_to = self.to_hour.strftime(TIME_FORMAT)
-        return '%s-%s %s-%s' % (self.get_weekday_from_display(), self.get_weekday_to_display(), formatted_from, formatted_to)
+        return self.to_short_string()
