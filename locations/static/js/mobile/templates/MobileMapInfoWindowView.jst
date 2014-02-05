@@ -13,11 +13,18 @@
                 <div class="lbl">Hours of operation</div>
                 <%
                 var hoursOfOperationList = locationData.hoursOfOperation();
-                for (i=0; i < hoursOfOperationList.length; i++) {
-                    var hoursOfOperationDef = hoursOfOperationList[i];
+                if (hoursOfOperationList.length > 0) {
+                    for (i=0; i < hoursOfOperationList.length; i++) {
+                        var hoursOfOperationDef = hoursOfOperationList[i];%>
+                        <div class="value"><%=hoursOfOperationDef %></div>
+                <%  }
+                }
+                else { %>
+                    <div class="value">not provided</div>
+                <%
+                }
                 %>
-                    <div class="value"><%=hoursOfOperationDef %></div>
-                <% } %>
+
             </div>
             <div class="notes">
                 Please note that any CUSD student can eat a free meal at Bogle Junior High this summer.
