@@ -5,9 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class MealLocation(models.Model):
-    name = models.CharField(max_length=254)
-    address = map_fields.AddressField(max_length=254)
-    geolocation = map_fields.GeoLocationField(max_length=100)
+    name = models.CharField(max_length=60)
+    address = map_fields.AddressField(max_length=100)
+    geolocation = map_fields.GeoLocationField(max_length=50)
+    notes = models.TextField(blank=True)
 
 
 MON = 1

@@ -89,6 +89,7 @@ div.background {
     border: 1px solid #D3D0C5;
     background-color: #FFFEFE;
     margin-top: 5px;
+    width: 100%;
 }
 #map-info-window .additional-details-box .clock-icon {
     width: 46px;
