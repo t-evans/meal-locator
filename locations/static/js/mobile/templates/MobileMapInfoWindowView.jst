@@ -11,7 +11,13 @@
         <td class="additional-details">
             <div class="hours-of-operation">
                 <div class="lbl">Hours of operation</div>
-                <div class="value">10am to 2pm</div>
+                <%
+                var hoursOfOperationList = locationData.hoursOfOperation();
+                for (i=0; i < hoursOfOperationList.length; i++) {
+                    var hoursOfOperationDef = hoursOfOperationList[i];
+                %>
+                    <div class="value"><%=hoursOfOperationDef %></div>
+                <% } %>
             </div>
             <div class="notes">
                 Please note that any CUSD student can eat a free meal at Bogle Junior High this summer.

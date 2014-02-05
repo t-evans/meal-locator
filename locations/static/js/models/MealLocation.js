@@ -43,6 +43,9 @@ function(_, Backbone, app) {
         longitude: function() {
             return this.get('longitude');
         },
+        hoursOfOperation: function() {
+            return this.get('hours_of_operation');
+        },
         positionStr: function() {
             if (this.latitude() == null || this.longitude() == null)
                 return null;
