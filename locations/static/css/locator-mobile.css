@@ -104,12 +104,13 @@ div.background {
     color: #1DA24B;
 }
 #map-info-window .additional-details .hours-of-operation .value {
+    padding-left: 5px;
     color: #9F9F9F;
-    font-size: 14;
+    font-size: 13px;
 }
 #map-info-window .additional-details .notes {
     color: #787878;
-    font-size: 12;
+    font-size: 14px;
     line-height: 1.1;
 }
 #map-info-window .distance-from-user {
