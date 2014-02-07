@@ -5,27 +5,6 @@
             $map = $('<div id="map_preview" style="width: 500px; height: 300px;"></div>'),
             mapStartingLocation = $addressFld.val(),
             hasInitialAddress = mapStartingLocation != null && mapStartingLocation !== '',
-            addMarkerManagementToMapsApi = function() {
-                // Google's v3 api doesn't allow easy access to current markers on the
-                // map.  This fixes that.
-                google.maps.Map.prototype.markers = new Array();
-                google.maps.Map.prototype.getMarkers = function() {
-                    return this.markers
-                };
-                google.maps.Map.prototype.clearMarkers = function() {
-                    for(var i=0; i<this.markers.length; i++){
-                        this.markers[i].setMap(null);
-                    }
-                    this.markers = new Array();
-                };
-                google.maps.Marker.prototype._setMap = google.maps.Marker.prototype.setMap;
-                google.maps.Marker.prototype.setMap = function(map) {
-                    if (map) {
-                        map.markers[map.markers.length] = this;
-                    }
-                    this._setMap(map);
-                }
-            },
             configureMap = function() {
                 if (!mapStartingLocation) {
                     var defaultCenter = new google.maps.LatLng(39.368279,-96.707153);
@@ -74,7 +53,9 @@
                     // location.
                     // This code removes that starting marker so all that is left is
                     // an empty map.
-                    map.clearMarkers();
+                    var marker = $addressFld.geocomplete('marker');
+                    marker.setMap(null);
+                    $addressFld.geocomplete('initMarker');
                     map.setZoom(3);
                 }
                 else {
@@ -111,7 +92,6 @@
                     lookUpAddressByGeolocation();
                 });
             };
-        addMarkerManagementToMapsApi();
         configureMap();
         onMapConfigured();
         addLookUpAddressButtonToGeolocationFld();
