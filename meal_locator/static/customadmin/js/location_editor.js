@@ -55,6 +55,17 @@
                     $geolocationFld.val(geolocation);
                 });
             },
+            getGeolocationLatLng = function() {
+                var geolocationStr = $geolocationFld.val(),
+                    latLng;
+                if (geolocationStr && geolocationStr.length) {
+                    var latlong = geolocationStr.split(',');
+                    latLng = new google.maps.LatLng(latlong[0], latlong[1]);
+                }
+                else
+                    latLng = null;
+                return latLng
+            },
             onMapConfigured = function() {
                 var map = $addressFld.geocomplete('map');
                 if (!hasInitialAddress) {
@@ -73,16 +84,36 @@
                     // but manually setting the zoom seems to work.
                     setTimeout(function() {
                         map.setZoom(14);
-                        var geolocationStr = $geolocationFld.val();
-                        if (geolocationStr && geolocationStr.length) {
-                            var latlong = geolocationStr.split(',');
-                            map.setCenter(new google.maps.LatLng(latlong[0], latlong[1]));
-                        }
+                        var latLng = getGeolocationLatLng();
+                        if (latLng)
+                            map.setCenter(latLng);
                     }, 1000);
                 }
+            },
+            geocoder = new google.maps.Geocoder(),
+            lookUpAddressByGeolocation = function() {
+                var latLng = getGeolocationLatLng();
+                if (latLng) {
+                    geocoder.geocode({'latLng': latLng}, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[0]) {
+                                var formattedAddress = results[0].formatted_address;
+                                $addressFld.val(formattedAddress);
+                            }
+                        }
+                    });
+                }
+            },
+            addLookUpAddressButtonToGeolocationFld = function() {
+                var $lookUpAddress = $('<a id="look-up-address-btn" href="javascript:void(0);" style="padding: 2px 0 0 7px;">Update Address from Geolocation</a>');
+                $geolocationFld.after($lookUpAddress);
+                $lookUpAddress.click(function() {
+                    lookUpAddressByGeolocation();
+                });
             };
         addMarkerManagementToMapsApi();
         configureMap();
         onMapConfigured();
+        addLookUpAddressButtonToGeolocationFld();
     });
 }(jQuery));

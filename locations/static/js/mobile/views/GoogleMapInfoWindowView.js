@@ -28,7 +28,7 @@ function($, Backbone, _, templateText, mobileTemplateText) {
         },
         open: function(mapMarker, markerData) {
             var that = this;
-            markerData.lookupAddressByCoords();
+            //markerData.lookUpAddressByCoords();
             if ($.browser.isMobileDevice) {
                 var html = this.mobileTemplate({locationData: markerData}),
                     $currentInfoWindow = $('#map-info-window');

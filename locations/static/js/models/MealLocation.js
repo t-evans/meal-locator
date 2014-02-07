@@ -16,8 +16,7 @@ function(_, Backbone, app) {
         name: function() {
             return this.get('name');
         },
-        lookupAddressByCoords: function() {
-            // Fires an "addressReceived" event if/when it can look up the address by location.
+        lookUpAddressByCoords: function() {
             var that = this,
                 latlng = new google.maps.LatLng(this.latitude(), this.longitude());
             geocoder.geocode({'latLng': latlng}, function(results, status) {
