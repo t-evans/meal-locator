@@ -12,7 +12,9 @@ class OperatingHoursInline(admin.TabularInline):
 
 class LocationDetailsSectionInline(admin.TabularInline):
     model = LocationDetailSection
+    sortable_field_name = 'order'
     extra = 0
+    ordering = ['order']
 
 
 class MealLocationAdmin(admin.ModelAdmin):
@@ -27,6 +29,7 @@ class MealLocationAdmin(admin.ModelAdmin):
             google_maps_api,
             'customadmin/js/jquery.geocomplete.min.js',
             'customadmin/js/location_editor.js',
+            'customadmin/js/hide_inline_position_column.js',
             'customadmin/js/prevent_enter_backspace.js',
         )
 
