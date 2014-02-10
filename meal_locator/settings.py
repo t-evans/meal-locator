@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*.nutrislice.com']
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli',  # must be before contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +54,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
+)
+
 
 ROOT_URLCONF = 'meal_locator.urls'
 
@@ -126,6 +133,14 @@ TEMPLATE_DIRS = (
     # ute paths, not relative paths.
     PROJECT_DIR + "/templates",
 )
+
+
+#######################
+# GRAPPELLI Settings  #
+#######################
+
+GRAPPELLI_ADMIN_TITLE = 'Nutrislice Summer Feeding'
+
 
 GOOGLE_API_KEY = 'AIzaSyDuV-Jyz8N6b1fVUVCa1EnbPzgeCs9J5_o'
 ADDITIONAL_GOOGLE_MAPS_LIBRARIES = 'places' # Makes address autocomplete available to the django-google-maps app

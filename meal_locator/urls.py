@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^api/locations/?', include('locations.api.urls')),
 
     url(r'^$', RedirectView.as_view(url='/locations/')),
