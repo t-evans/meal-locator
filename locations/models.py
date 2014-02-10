@@ -10,6 +10,15 @@ class MealLocation(models.Model):
     notes = models.TextField(blank=True)
 
 
+class LocationDetailSection(models.Model):
+    meal_location = models.ForeignKey(MealLocation, related_name='location_detail_sections')
+    header = models.CharField(max_length=40, blank=True)
+    sub_header = models.CharField(max_length=80, blank=True)
+    notes = models.TextField(blank=True)
+    order = models.PositiveSmallIntegerField()
+
+
+
 MON = 1
 TUES = 2
 WED = 3

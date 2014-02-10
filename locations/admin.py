@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
-from locations.models import MealLocation, OperatingHours
+from locations.models import *
 
 
 class OperatingHoursInline(admin.TabularInline):
@@ -10,9 +10,14 @@ class OperatingHoursInline(admin.TabularInline):
     verbose_name_plural = 'Hours of Operation'
 
 
+class LocationDetailsSectionInline(admin.TabularInline):
+    model = LocationDetailSection
+    extra = 0
+
+
 class MealLocationAdmin(admin.ModelAdmin):
     list_display = ('name', 'address')
-    inlines = (OperatingHoursInline, )
+    inlines = (LocationDetailsSectionInline, )
 
     class Media:
         google_maps_api = 'https://maps.google.com/maps/api/js?sensor=false&libraries=%s&key=%s' \
