@@ -1,5 +1,6 @@
 /**
- * Hides the column containing an input with the name "position" or the name "order".
+ * Hides any column with the "position" or "order" class (which typically are the columns
+ * containing a position/order input).
  */
 
 (function($) {
