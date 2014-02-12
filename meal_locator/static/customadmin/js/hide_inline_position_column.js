@@ -5,9 +5,6 @@
 
 (function($) {
     $(function(){
-        $('.grp-th.order').hide();
-        $('.grp-td.order').hide();
-        $('.grp-th.position').hide();
-        $('.grp-td.position').hide();
+        $('.grp-th.order, .grp-td.order, .grp-th.position, .grp-td.position').hide();
     });
 }(jQuery));
