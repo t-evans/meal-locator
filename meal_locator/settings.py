@@ -106,7 +106,7 @@ if not LOCAL:
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'nutrislice-meal-locator'
-STATIC_URL = "https://nutrislice-districts.s3.amazonaws.com/" # uncomment to use AWS
+STATIC_URL = "https://nutrislice-districts.s3.amazonaws.com/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
