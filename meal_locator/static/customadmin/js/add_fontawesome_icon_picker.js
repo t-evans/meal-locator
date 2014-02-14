@@ -81,6 +81,8 @@
                     $dialog.dialog('close');
                 });
                 $dialog.dialog("open");
+                $dialog.find('a').blur();
+
                 event.preventDefault();
             });
         });
