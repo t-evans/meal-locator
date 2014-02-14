@@ -8,3 +8,6 @@ django-grappelli==2.5.1
 # Provides a model field for geolocations (https://pypi.python.org/pypi/django-google-maps).
 # It also provides a picker for the admin, but I prefer the jquery picker (jquery.geocomplete).
 django-google-maps==0.2.2
+
+# A Django app for including twitter bootstrap and font awesome (https://pypi.python.org/pypi/django-awesome-bootstrap/).
+django-awesome-bootstrap==3.1.0

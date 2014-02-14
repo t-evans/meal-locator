@@ -12,11 +12,11 @@ class MealLocation(models.Model):
 
 class LocationDetailSection(models.Model):
     meal_location = models.ForeignKey(MealLocation, related_name='location_detail_sections')
-    header = models.CharField(max_length=40, blank=True)
-    sub_header = models.CharField(max_length=80, blank=True)
+    header = models.CharField(max_length=40, blank=True, verbose_name='title')
+    sub_header = models.CharField(max_length=80, blank=True, verbose_name='light-gray text')
     notes = models.TextField(blank=True)
     order = models.PositiveSmallIntegerField()
-
+    icon = models.CharField(max_length=30, blank=True)  # Ultimately will hold the font-awesome icon config
 
 
 MON = 1

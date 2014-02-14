@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'south',
     'django_google_maps',
+    'awesome_bootstrap',
     'locations',
 )
 
