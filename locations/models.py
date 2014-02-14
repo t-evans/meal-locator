@@ -18,6 +18,9 @@ class LocationDetailSection(models.Model):
     order = models.PositiveSmallIntegerField()
     icon = models.CharField(max_length=30, blank=True)  # Ultimately will hold the font-awesome icon config
 
+    class Meta:
+        verbose_name = 'detail section'
+        verbose_name_plural = 'details'
 
 MON = 1
 TUES = 2
