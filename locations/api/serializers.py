@@ -5,19 +5,19 @@
 
 from rest_framework import serializers
 from rest_framework import fields
-from locations.models import MealLocation
+from locations.models import *
+
+
+class LocationDetailsSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocationDetailSection
+        fields = ('order', 'header', 'sub_header', 'icon', 'notes')
 
 
 class MealLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealLocation
-        fields = ('id', 'name', 'address', 'geolocation', 'latitude', 'longitude', 'hours_of_operation')
+        fields = ('id', 'name', 'address', 'geolocation', 'latitude', 'longitude', 'location_detail_sections')
     latitude = fields.FloatField(source='geolocation.lat')
     longitude = fields.FloatField(source='geolocation.lon')
-    hours_of_operation = serializers.SerializerMethodField('operating_hours_list')
-
-    def operating_hours_list(self, meal_location):
-        operating_hours_list = []
-        for operating_hours_def in meal_location.operating_hours.all():
-            operating_hours_list.append(operating_hours_def.to_short_string())
-        return operating_hours_list
+    location_detail_sections = LocationDetailsSectionSerializer(many=True)

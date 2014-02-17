@@ -21,6 +21,7 @@ class LocationDetailSection(models.Model):
     class Meta:
         verbose_name = 'detail section'
         verbose_name_plural = 'details'
+        ordering = ['order']
 
 MON = 1
 TUES = 2
