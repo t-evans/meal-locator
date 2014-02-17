@@ -3,32 +3,3 @@
 <div class="distance-from-user hidden"></div>
 <div class="get-directions-btn" data-position="<%=locationData.positionStr() %>">Get directions</div>
 <div class="clear"></div>
-<div class="line-separator"></div>
-<h1 class="title">Additional Details</h1>
-<table class="additional-details-box" cellpadding="0" cellspacing="0">
-    <tr>
-        <td class="clock-icon"></td>
-        <td class="additional-details">
-            <div class="hours-of-operation">
-                <div class="lbl">Hours of operation</div>
-                <%
-                var hoursOfOperationList = locationData.hoursOfOperation();
-                if (hoursOfOperationList.length > 0) {
-                    for (i=0; i < hoursOfOperationList.length; i++) {
-                        var hoursOfOperationDef = hoursOfOperationList[i];%>
-                        <div class="value"><%=hoursOfOperationDef %></div>
-                <%  }
-                }
-                else { %>
-                    <div class="value">not provided</div>
-                <%
-                }
-                %>
-
-            </div>
-            <div class="notes">
-                <%=locationData.notes() %>
-            </div>
-        </td>
-    </tr>
-</table>

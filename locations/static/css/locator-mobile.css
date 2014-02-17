@@ -14,7 +14,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	border: 0;
 	outline: 0;
 	font-size: 100%;
-	vertical-align: baseline;
 	background: transparent;
 	font-weight: normal;
 	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -86,25 +85,34 @@ div.background {
     border-bottom:1px solid #D7D5CD;
 }
 #map-info-window .additional-details-box {
-    border: 1px solid #D3D0C5;
+    border-left: 1px solid #D3D0C5;
+    border-top: 1px solid #D3D0C5;
+    border-right: 1px solid #D3D0C5;
     background-color: #FFFEFE;
     margin-top: 5px;
     width: 100%;
 }
-#map-info-window .additional-details-box .clock-icon {
+#map-info-window .additional-details-box tr td {
+    border-bottom: 1px solid #D3D0C5;
+}
+#map-info-window .additional-details-box .icon {
     width: 46px;
     height: 100%;
-    background-size: auto auto;
-    background: #F3F0E7 url("../images/mobile/clock.png") no-repeat top center;
+    padding-top: 10px;
+    text-align: center;
+    vertical-align: top;
+    color: #1DA24B;
+    font-size: 20px;
+    background: #F3F0E7;
 }
 #map-info-window .additional-details-box .additional-details {
-    padding: 8px 4px 5px 5px;
+    padding: 5px 4px 5px 5px;
 }
-#map-info-window .additional-details .hours-of-operation .lbl {
+#map-info-window .additional-details .header .lbl {
     font-weight: 500;
     color: #1DA24B;
 }
-#map-info-window .additional-details .hours-of-operation .value {
+#map-info-window .additional-details .header .value {
     padding-left: 5px;
     color: #9F9F9F;
     font-size: 13px;
@@ -113,6 +121,7 @@ div.background {
     color: #787878;
     font-size: 14px;
     line-height: 1.1;
+    margin-top: 3px;
 }
 #map-info-window .distance-from-user {
     float: left;

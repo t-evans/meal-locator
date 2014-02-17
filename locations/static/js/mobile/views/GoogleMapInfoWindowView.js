@@ -7,9 +7,10 @@ define([
     'underscore',
     'text!templates/GoogleMapInfoWindowView.jst',
     'text!templates/MobileMapInfoWindowView.jst',
+    'text!templates/LocationDetailSectionView.jst',
     'lib/jquery.browser-info'
 ],
-function($, Backbone, _, templateText, mobileTemplateText) {
+function($, Backbone, _, templateText, mobileTemplateText, locationDetailSectionText) {
     var distanceMatrixService  = new google.maps.DistanceMatrixService();
     return Backbone.View.extend({
         id: 'map-info-window',
@@ -18,19 +19,35 @@ function($, Backbone, _, templateText, mobileTemplateText) {
         },
         template: _.template(templateText),
         mobileTemplate: _.template(mobileTemplateText),
+        locationDetailSectionTemplate: _.template(locationDetailSectionText),
         infoWindow: null,
         initialize: function(options) {
+            $.browser.isMobileDevice = true;
             this.mapView = options.mapView;
             this.infoWindow = new google.maps.InfoWindow();
         },
         render: function() {
             return this;
         },
+        _addAdditionalDetailsSection: function(markerData) {
+            var locationDetailsSections = markerData.get('location_detail_sections');
+            if (locationDetailsSections.length) {
+                var $lineSeparator = $('<div class="line-separator"></div>'),
+                    $additionalDetailsHeader = $('<h1 class="title">Additional Details</h1>'),
+                    $locationDetailsTable = $('<table class="additional-details-box" cellpadding="0" cellspacing="0"></table>');
+                for (var i=0; i<locationDetailsSections.length; i++) {
+                    var locationDetail = locationDetailsSections[i],
+                        locationDetailHtml = this.locationDetailSectionTemplate({locationDetail: locationDetail});
+                    $locationDetailsTable.append(locationDetailHtml);
+                }
+                this.$el.append($lineSeparator).append($additionalDetailsHeader).append($locationDetailsTable);
+            }
+        },
         open: function(mapMarker, markerData) {
             var that = this;
             //markerData.lookUpAddressByCoords();
             if ($.browser.isMobileDevice) {
-                var html = this.mobileTemplate({locationData: markerData}),
+                var infoWindowHtml = this.mobileTemplate({locationData: markerData})
                     $currentInfoWindow = $('#map-info-window');
 
                 markerData.off('change:address');
@@ -42,7 +59,8 @@ function($, Backbone, _, templateText, mobileTemplateText) {
                     this.mapView.$el.after(this.$el);
                     this.$el.addClass('mobile');
                 }
-                this.$el.html(html);
+                this.$el.html(infoWindowHtml);
+                this._addAdditionalDetailsSection(markerData);
                 this.$el.show();
                 this.trigger('showMobileInfoWindow');
             }
