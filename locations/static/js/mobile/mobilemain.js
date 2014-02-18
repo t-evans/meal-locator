@@ -54,7 +54,8 @@ require([
     'app',
     'views/HomeView',
     'lib/fastclick.min',
-    'util/querystring-utils'
+    'util/querystring-utils',
+    'util/string-utils'
 ],
 function( $, Backbone, app, HomeView, FastClick) {
     window.app = app;

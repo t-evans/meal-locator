@@ -46,7 +46,11 @@ function(_, Backbone, app) {
             return this.get('hours_of_operation');
         },
         notes: function() {
-            return this.get('notes');
+            var notes = this.get('notes');
+            if (!notes || typeof notes === 'undefined')
+                return notes;
+            else
+                return notes.convertNewlinesToBreaks();
         },
         positionStr: function() {
             if (this.latitude() == null || this.longitude() == null)

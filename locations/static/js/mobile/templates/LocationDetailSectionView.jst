@@ -12,7 +12,7 @@
             <% } %>
         </div>
         <% if (locationDetail.notes) { %>
-            <div class="notes"><%=locationDetail.notes %></div>
+            <div class="notes"><%=locationDetail.notes.convertNewlinesToBreaks() %></div>
         <% } %>
     </td>
 </tr>
