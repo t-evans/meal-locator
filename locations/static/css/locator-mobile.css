@@ -72,7 +72,8 @@ div.background {
     font-size: 17px;
     padding-bottom: 3px;
 }
-#map-info-window .address {
+#map-info-window .address,
+#map-info-window .notes {
     font-weight: lighter;
     font-size: 13px;
     line-height: 1.0;
