@@ -22,7 +22,21 @@
     ];
 
     $(function(){
-        var $dialog = $('<div id="dialog" title="Select an icon"></div>');
+        var $dialog = $('<div id="dialog" title="Select an icon"></div>'),
+            onIconSelectorClicked = function(event, $textField, $selectedIcon) {
+                $dialog.find('.icon-link').unbind('click').click(function() {
+                    var $icon = $(this).find('i'),
+                        iconClass = $icon.attr('class');
+                    $textField.val(iconClass);
+                    $selectedIcon.attr('class', iconClass).show();
+                    $dialog.dialog('close');
+                });
+                $dialog.dialog("open");
+                $dialog.find('a').blur();
+
+                event.preventDefault();
+            };
+
         for (var i=0; i<awesomeIconsArray.length; i++) {
             var iconDef = awesomeIconsArray[i],
                 $iconLink = $('<a class="icon-link" href="javascript:void(0);"></a>'),
@@ -50,7 +64,7 @@
         $('input.font-awesome').each(function() {
             var $textField = $(this),
                 $iconSelectorImage = $('<span class="ui-icon ui-icon-newwin"></span>'),
-                $iconSelectorLink = $('<a href="javascript:void(0);" id="icon-selector-link" class="ui-state-default ui-corner-all"></a>'),
+                $iconSelectorLink = $('<a href="javascript:void(0);" class="icon-selector-link ui-state-default ui-corner-all"></a>'),
                 selectedIconClass = $textField.val(),
                 $iconSelector = $('<div class="icon-selector"></div>'),
                 $selectedIconWrapper = $('<div class="selected-icon"></div>'),
@@ -72,19 +86,27 @@
             $iconSelector.append($iconSelectorLink);
             $textField.after($iconSelector);
 
-            $iconSelectorLink.click(function(event) {
-                $dialog.find('.icon-link').unbind('click').click(function() {
-                    var $icon = $(this).find('i'),
-                        iconClass = $icon.attr('class');
-                    $textField.val(iconClass);
-                    $selectedIcon.attr('class', iconClass).show();
-                    $dialog.dialog('close');
-                });
-                $dialog.dialog("open");
-                $dialog.find('a').blur();
-
-                event.preventDefault();
+            $iconSelectorLink.click(function(e) {
+                onIconSelectorClicked(e, $textField, $selectedIcon)
             });
+        });
+
+        // Listens for if/when a new formset item is added and sets up the icon stuff
+        // for the new row.
+        // Eventually, an event trigger may be added to django core to handle
+        // this: https://code.djangoproject.com/ticket/15760.  For now, we get an
+        // ugly, hacky workaround...
+        $('#location_detail_sections-group').on('DOMNodeInserted', function(e) {
+            var $target = $(e.target);
+            if ($target.hasClass('grp-module') && $target.hasClass('grp-tbody')) {
+                var $textField = $target.find('.font-awesome'),
+                    $selectedIcon = $target.find('.icon-selector').find('i:not(.clear-selected-icon)'),
+                    $iconSelectorLink = $target.find('.icon-selector-link');
+                $iconSelectorLink.off('click');
+                $iconSelectorLink.click(function(e) {
+                    onIconSelectorClicked(e, $textField, $selectedIcon);
+                })
+            }
         });
     });
 }(jQuery));
