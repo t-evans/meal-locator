@@ -21,6 +21,10 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
         mobileTemplate: _.template(mobileTemplateText),
         locationDetailSectionTemplate: _.template(locationDetailSectionText),
         infoWindow: null,
+        isRunningOnMobileDevice: function() {
+            return true; // We'll treat the main UI the same as the mobile, for now.
+            //return $.browser.isMobileDevice;
+        },
         initialize: function(options) {
             this.mapView = options.mapView;
             this.infoWindow = new google.maps.InfoWindow();
@@ -45,7 +49,7 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
         open: function(mapMarker, markerData) {
             var that = this;
             //markerData.lookUpAddressByCoords();
-            if ($.browser.isMobileDevice) {
+            if (that.isRunningOnMobileDevice()) {
                 var infoWindowHtml = this.mobileTemplate({locationData: markerData})
                     $currentInfoWindow = $('#map-info-window');
 
@@ -106,7 +110,7 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
             this.infoWindow.open(mapMarker.getMap(), mapMarker);
         },
         close: function() {
-            if ($.browser.isMobileDevice){
+            if (this.isRunningOnMobileDevice()){
                 var $infoWindow = this.$el;
                 $infoWindow.slideDown(200, function() {
                     $infoWindow.remove();
@@ -117,7 +121,7 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
         },
         height: function() {
             var height;
-            if ($.browser.isMobileDevice)
+            if (this.isRunningOnMobileDevice())
                 height = this.$el.height();
             else
                 height = 0; // Non-mobile info windows are shown directly on the map.
