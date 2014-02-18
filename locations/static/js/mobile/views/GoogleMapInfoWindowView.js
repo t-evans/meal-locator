@@ -22,7 +22,6 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
         locationDetailSectionTemplate: _.template(locationDetailSectionText),
         infoWindow: null,
         initialize: function(options) {
-            $.browser.isMobileDevice = true;
             this.mapView = options.mapView;
             this.infoWindow = new google.maps.InfoWindow();
         },
