@@ -199,7 +199,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             var that = this,
                 $window = $(window),
                 $body = $(document.body),
-                closeInfoWindowScrollPos = 160,
+                closeInfoWindowScrollPos = 100,
                 infoWindowZoomLevel = 16;
 
             // Show the info window
