@@ -4,13 +4,6 @@ from django.contrib import admin
 from locations.models import *
 
 
-class OperatingHoursInline(admin.TabularInline):
-    model = OperatingHours
-    extra = 0
-    verbose_name = 'Hours of Operation'
-    verbose_name_plural = 'Hours of Operation'
-
-
 class LocationDetailsSectionForm(forms.ModelForm):
     class Meta:
         model = LocationDetailSection
