@@ -199,12 +199,12 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             var that = this,
                 $window = $(window),
                 $body = $(document.body),
-                closeInfoWindowScrollPos = 100,
+                closeInfoWindowScrollPos = 75,
                 infoWindowZoomLevel = 16;
 
             // Show the info window
             $body.animate({
-                'scrollTop': this.infoWindowView.$el.offset().top
+                'scrollTop': this.infoWindowView.$el.offset().top - 200 // "- 200" is for cases when the location has a bunch of additional details - we don't want it pushing the map all they way off the screen.
             }, 700);
 //            that.$el.darken({
 //                'opacity': 0.25,
