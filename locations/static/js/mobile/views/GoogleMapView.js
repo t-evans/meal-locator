@@ -181,7 +181,8 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
         },
         render: function() {
             var mapOptions = {
-                    center: this.calculateCenterOfMarkers()
+                    center: this.calculateCenterOfMarkers(),
+                    scrollwheel: false
                 },
                 map = new google.maps.Map(this.el, mapOptions),
                 mapDimentions = {
