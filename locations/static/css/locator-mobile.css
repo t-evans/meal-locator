@@ -45,15 +45,15 @@ div.background {
     height: 100%;
     width: 100%;
     /*background-size: cover; - Cover looks bad if someone has a long list of schools.  It has to zoom the image way in.*/
-    background-size: auto auto;
-    background: #e9e9e9 url("../images/mobile/background_tileable.jpg") repeat fixed;
+    /*background-size: auto auto;*/
+    background: #f0f4f5;
 }
 
 #map-instructions {
     padding: 10px;
     line-height: 1.2;
     font-weight: bold;
-    background-color: #F3F0E7;
+    background-color: #f0f4f5;
 }
 #map-canvas {
     height: 100%;
@@ -104,7 +104,7 @@ div.background {
     vertical-align: top;
     color: #1DA24B;
     font-size: 20px;
-    background: #F3F0E7;
+    background: #e8eced;
 }
 #map-info-window .additional-details-box .additional-details {
     padding: 5px 4px 5px 5px;
@@ -119,7 +119,7 @@ div.background {
     font-size: 13px;
 }
 #map-info-window .additional-details .notes {
-    color: #787878;
+    color: #2B2B2B;
     font-size: 14px;
     line-height: 1.1;
     margin-top: 3px;
