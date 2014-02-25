@@ -128,16 +128,21 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
             return height;
         },
         getDirections: function(event) {
-            var $btn = $(event.target),
-                addressStr = this.$('.address').html().replace('<br>', ', '),
-                //destinationStr = $btn.data('position'),
-                directionsUrl = 'http://maps.google.com/maps?daddr=' + addressStr,
-                currentUserPosition = this.mapView.getCurrentPosition();
-            if (currentUserPosition)
-                directionsUrl += '&saddr=' + currentUserPosition.toString();
-            if (app.isRunningInWrapperApp)
-                directionsUrl += '&openInNewWindow=true';
-            window.open(directionsUrl, target="_blank");
+            try {
+                var $btn = $(event.target),
+                    addressStr = this.$('.address').html().replace('<br>', ', '),
+                    //destinationStr = $btn.data('position'),
+                    directionsUrl = 'http://maps.google.com/maps?daddr=' + addressStr,
+                    currentUserPosition = this.mapView.getCurrentPosition();
+                if (currentUserPosition)
+                    directionsUrl += '&saddr=' + currentUserPosition.toString();
+                if (app.isRunningInWrapperApp)
+                    directionsUrl += '&openInNewWindow=true';
+                window.open(directionsUrl, target="_blank");
+            }
+            catch(e) {
+                console.log('Encountered error while attempting to look up directions: ' + e);
+            }
         }
     });
 });
