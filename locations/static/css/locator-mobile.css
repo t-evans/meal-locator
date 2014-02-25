@@ -98,8 +98,8 @@ div.background {
 }
 #map-info-window .additional-details-box .icon {
     width: 46px;
-    height: 100%;
-    padding-top: 10px;
+    height: 34px;
+    padding-top: 8px;
     text-align: center;
     vertical-align: top;
     color: #1DA24B;
