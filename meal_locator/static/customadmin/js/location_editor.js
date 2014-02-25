@@ -91,9 +91,13 @@
                 $lookUpAddress.click(function() {
                     lookUpAddressByGeolocation();
                 });
+            },
+            hideGeolocationField = function() {
+                $('div.geolocation').hide();
             };
         configureMap();
         onMapConfigured();
         addUpdateAddressFromGeolocationButton();
+        hideGeolocationField();
     });
 }(jQuery));
