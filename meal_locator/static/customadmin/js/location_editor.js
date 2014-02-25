@@ -86,7 +86,7 @@
                 }
             },
             addUpdateAddressFromGeolocationButton = function() {
-                var $lookUpAddress = $('<a id="look-up-address-btn" class="ui-state-default ui-corner-all" href="javascript:void(0);" title="Uses the provided Geolocation to look up an address and insert it into the Address field, above.">Update Address from Geolocation</a>');
+                var $lookUpAddress = $('<a id="look-up-address-btn" class="ui-state-default ui-corner-all" href="javascript:void(0);" title="If you’ve moved the pin, click here to update the address, above, to the pin’s new location.">Update Address from pin</a>');
                 $map.after($lookUpAddress);
                 $lookUpAddress.click(function() {
                     lookUpAddressByGeolocation();
