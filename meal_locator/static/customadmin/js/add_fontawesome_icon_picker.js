@@ -28,7 +28,7 @@
                     var $icon = $(this).find('i'),
                         iconClass = $icon.attr('class');
                     $textField.val(iconClass);
-                    $selectedIcon.attr('class', iconClass).show();
+                    $selectedIcon.attr('class', iconClass).addClass('fa-2x').show();
                     $dialog.dialog('close');
                 });
                 $dialog.dialog("open");
@@ -76,7 +76,7 @@
             $iconSelector.append($selectedIconWrapper);
             if (selectedIconClass) {
                 $iconSelectorLink.append($iconSelectorImage).append('Change...');
-                $selectedIcon.attr('class', selectedIconClass).show();
+                $selectedIcon.attr('class', selectedIconClass).addClass('fa-2x').show();
             }
             else {
                 $iconSelectorLink.append($iconSelectorImage).append('Choose...');

@@ -36,9 +36,7 @@
 .selected-icon {
     width: 100%;
     padding: 3px 0 8px 0;
-}
-.selected-icon i {
-    padding-left: 35px;
+    text-align: center;
 }
 i.fa {
     color: green;
