@@ -28,7 +28,7 @@ class MealLocationAdmin(admin.ModelAdmin):
             "all": (
                 # For icon picker
                 'css/jquery-ui-dialog.min.css',
-                'css/icon-selector.css',
+                'css/meal-location-editor.css',
                 'font_awesome/css/font-awesome.css',
             )
         }
