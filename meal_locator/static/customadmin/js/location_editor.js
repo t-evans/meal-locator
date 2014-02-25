@@ -1,10 +1,12 @@
 (function($) {
     $(function(){
         var $addressFld = $('#id_address'),
+            addressFieldValueOnPageLoad = $addressFld.val(),
             $geolocationFld = $('#id_geolocation'),
             $map = $('<div id="map_preview" style="width: 500px; height: 300px;"></div>'),
-            mapStartingLocation = $addressFld.val(),
+            mapStartingLocation = $geolocationFld.val(),
             hasInitialAddress = mapStartingLocation != null && mapStartingLocation !== '',
+            userManuallyChangedAddress = false,
             configureMap = function() {
                 if (!mapStartingLocation) {
                     var defaultCenter = new google.maps.LatLng(39.368279,-96.707153);
@@ -12,12 +14,16 @@
                 }
 
                 $map.insertAfter($addressFld);
+                $addressFld.keyup(function() {
+                    userManuallyChangedAddress = true;
+                    addressFieldValueOnPageLoad = $addressFld.val();
+                });
 
                 $addressFld.geocomplete({
                     map: '#map_preview',
                     location: mapStartingLocation,
                     mapOptions: {
-                        zoom: 14,
+                        zoom: 14, // This field is in the documentation, but it is ignored here. Best you can do is programmatically change the zoom level after the map has loaded (see onMapLoaded(), below).
                         mapTypeId: google.maps.MapTypeId.HYBRID
                     },
                     markerOptions: {
@@ -28,10 +34,19 @@
                     var location = result.geometry.location,
                         geolocation = '' + location.d + ',' + location.e;
                     $geolocationFld.val(geolocation);
+
+                    // Geocomplete overwrites (on page load) the user-entered address with whatever the pin
+                    // is pointed to initially (if anything).  geocomplete then triggers this event.
+                    // The below restores the address value to what it should be.
+                    $addressFld.val(addressFieldValueOnPageLoad);
                 })
                 .bind('geocode:dragged', function(event, location) {
                     var geolocation = '' + location.d + ',' + location.e;
                     $geolocationFld.val(geolocation);
+                });
+                var map = $addressFld.geocomplete('map');
+                google.maps.event.addListenerOnce(map, 'idle', function() { // Fired the first time google maps stops loading stuff (see http://stackoverflow.com/questions/832692/how-can-i-check-whether-google-maps-is-fully-loaded).
+                    onMapLoaded();
                 });
             },
             getGeolocationLatLng = function() {
@@ -45,8 +60,9 @@
                     latLng = null;
                 return latLng
             },
-            onMapConfigured = function() {
+            onMapLoaded = function() {
                 var map = $addressFld.geocomplete('map');
+
                 if (!hasInitialAddress) {
                     // The only way I could find to get the map to draw initially when
                     // there is no starting location is to temporarily add a starting
@@ -63,12 +79,10 @@
                     // and I'm not sure why the default zoom level is other-than 14, like
                     // the documentation claims (https://github.com/ubilabs/geocomplete)...
                     // but manually setting the zoom seems to work.
-                    setTimeout(function() {
-                        map.setZoom(14);
-                        var latLng = getGeolocationLatLng();
-                        if (latLng)
-                            map.setCenter(latLng);
-                    }, 1000);
+                    //map.setZoom(14);
+                    var latLng = getGeolocationLatLng();
+                    if (map && latLng)
+                        map.setCenter(latLng);
                 }
             },
             geocoder = new google.maps.Geocoder(),
@@ -96,7 +110,6 @@
                 $('div.geolocation').hide();
             };
         configureMap();
-        onMapConfigured();
         addUpdateAddressFromGeolocationButton();
         hideGeolocationField();
     });
