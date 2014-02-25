@@ -29,7 +29,7 @@
 
 
 /***************************************
- * Icon-selected link styling
+ * Icon-selector link styling
  ***************************************/
 .icon-selector {
 }
@@ -37,14 +37,8 @@
     width: 100%;
     padding: 3px 0 8px 0;
 }
-.selected-icon i:not(clear-selected-icon) {
+.selected-icon i {
     padding-left: 35px;
-}
-.selected-icon .clear-selected-icon {
-    padding: 2px 5px 0 5px;
-    color: red;
-    float: right;
-    cursor: pointer;
 }
 i.fa {
     color: green;

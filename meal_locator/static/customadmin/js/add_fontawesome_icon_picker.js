@@ -68,13 +68,11 @@
                 selectedIconClass = $textField.val(),
                 $iconSelector = $('<div class="icon-selector"></div>'),
                 $selectedIconWrapper = $('<div class="selected-icon"></div>'),
-                $selectedIcon = $('<i></i>'),
-                $clearSelectedIconLink = $('<i class="clear-selected-icon fa fa-minus-circle"></i>');
+                $selectedIcon = $('<i></i>');
 
             $textField.hide();
             $selectedIcon.hide();
             $selectedIconWrapper.append($selectedIcon);
-            $selectedIconWrapper.append($clearSelectedIconLink);
             $iconSelector.append($selectedIconWrapper);
             if (selectedIconClass) {
                 $iconSelectorLink.append($iconSelectorImage).append('Change...');
@@ -100,7 +98,7 @@
             var $target = $(e.target);
             if ($target.hasClass('grp-module') && $target.hasClass('grp-tbody')) {
                 var $textField = $target.find('.font-awesome'),
-                    $selectedIcon = $target.find('.icon-selector').find('i:not(.clear-selected-icon)'),
+                    $selectedIcon = $target.find('.icon-selector').find('i'),
                     $iconSelectorLink = $target.find('.icon-selector-link');
                 $iconSelectorLink.off('click');
                 $iconSelectorLink.click(function(e) {
