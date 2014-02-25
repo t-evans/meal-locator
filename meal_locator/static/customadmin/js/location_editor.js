@@ -85,15 +85,15 @@
                     });
                 }
             },
-            addLookUpAddressButtonToGeolocationFld = function() {
-                var $lookUpAddress = $('<a id="look-up-address-btn" href="javascript:void(0);" style="padding: 2px 0 0 7px;" title="Uses the provided Geolocation to look up an address and insert it into the Address field, above.">Update Address from Geolocation</a>');
-                $geolocationFld.after($lookUpAddress);
+            addUpdateAddressFromGeolocationButton = function() {
+                var $lookUpAddress = $('<a id="look-up-address-btn" class="ui-state-default ui-corner-all" href="javascript:void(0);" title="Uses the provided Geolocation to look up an address and insert it into the Address field, above.">Update Address from Geolocation</a>');
+                $map.after($lookUpAddress);
                 $lookUpAddress.click(function() {
                     lookUpAddressByGeolocation();
                 });
             };
         configureMap();
         onMapConfigured();
-        addLookUpAddressButtonToGeolocationFld();
+        addUpdateAddressFromGeolocationButton();
     });
 }(jQuery));

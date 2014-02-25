@@ -41,3 +41,23 @@
 i.fa {
     color: green;
 }
+
+
+/***************************************
+ * The map
+ ***************************************/
+#map_preview {
+    padding-top: 5px;
+    float: left;
+}
+
+/***************************************
+ * Update-address button
+ ***************************************/
+#look-up-address-btn {
+    margin: 10px 0 0 10px;
+    padding: .4em 1em .4em 1em;
+    text-decoration: none;
+    position: relative;
+    float: left;
+}
