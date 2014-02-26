@@ -11,6 +11,9 @@ define([
     //'lib/jquery.dark-overlay'
 ],
 function($, Backbone, _, app, GoogleMapInfoWindowView) {
+    var DESIRED_RADIUS = 32000, // About 20 miles (in meters)
+        ZOOM_LEVEL_FOR_DESIRED_RADIUS = 9; // 9 is too zoomed out, but 10 is zoomed in enough to have the potential of cutting off markers, on mobile devices, that are very near 20 miles away
+
     return Backbone.View.extend({
         id: 'map-canvas',
         events: {
@@ -127,9 +130,13 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
                 return currentSum + nextValue;
             }, 0) / arr.length;
         },
-        calculateCenterOfMarkers: function() {
-            var averageLatitude = this.getAverageValues(this.allLatitudes),
-                averageLongitude = this.getAverageValues(this.allLongitudes);
+        calculateCenterOfMarkers: function(latitudes, longitudes) {
+            if (typeof latitudes === 'undefined')
+                latitudes = this.allLatitudes;
+            if (typeof longitudes === 'undefined')
+                longitudes = this.allLongitudes;
+            var averageLatitude = this.getAverageValues(latitudes),
+                averageLongitude = this.getAverageValues(longitudes);
             return new google.maps.LatLng(averageLatitude,averageLongitude);
         },
         getBoundsZoomLevel: function(minLatitude, maxLatitude, minLongitude, maxLongitude, mapDim) {
@@ -164,20 +171,54 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
 //            }, 6000);
             return Math.min(latZoom, lngZoom, ZOOM_MAX);
         },
-        calculateAppropriateZoomLevel: function(mapDimentions) {
-            var maxLatitude = _.max(this.allLatitudes),
-                minLatitude = _.min(this.allLatitudes),
-                maxLongitude = _.max(this.allLongitudes),
-                minLongitude = _.min(this.allLongitudes),
+        calculateAppropriateZoomLevel: function(mapDimentions, latitudes, longitudes) {
+            if (typeof latitudes === 'undefined')
+                latitudes = this.allLatitudes;
+            if (typeof longitudes === 'undefined')
+                longitudes = this.allLongitudes;
+            var maxLatitude = _.max(latitudes),
+                minLatitude = _.min(latitudes),
+                maxLongitude = _.max(longitudes),
+                minLongitude = _.min(longitudes),
                 zoom = this.getBoundsZoomLevel(minLatitude, maxLatitude, minLongitude, maxLongitude, mapDimentions);
             return zoom;
         },
         updateMapZoomLevelToIncludeCurrentUserPosition: function(map, currentUserPosition, mapDimentions) {
-            this.allLatitudes.push(currentUserPosition.latitude);
-            this.allLongitudes.push(currentUserPosition.longitude);
-            var zoom = this.calculateAppropriateZoomLevel(mapDimentions);
-            map.setZoom(zoom);
-            map.setCenter(this.calculateCenterOfMarkers());
+            var userLatLng = new google.maps.LatLng(currentUserPosition.latitude, currentUserPosition.longitude),
+                closestMarkerDistance = -1,
+                closestMarker = null,
+                markersWithinRadius = [],
+                zoomLevel,
+                mapCenter;
+
+            // Calculate the best zoom level and map center based on whether a meal location
+            // is nearby or not.
+            // The zoom level will be enough to show a 20-25 mile radius (on mobile devices)
+            // UNLESS that radius doesn't include any meal locations, in which case it will
+            // zoom out to include at least one.
+            _.each(this.markerModels, function(markerModel) {
+                var markerLatLng = new google.maps.LatLng(markerModel.latitude(), markerModel.longitude()),
+                    distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(userLatLng, markerLatLng);
+                if (closestMarkerDistance < 0 || closestMarkerDistance > distanceBetween) {
+                    closestMarkerDistance = distanceBetween;
+                    closestMarker = markerModel;
+                }
+                if (distanceBetween <= DESIRED_RADIUS)
+                    markersWithinRadius.push(markerModel);
+            });
+            if (markersWithinRadius.length > 0 || closestMarker === null) {
+                zoomLevel = ZOOM_LEVEL_FOR_DESIRED_RADIUS;
+                mapCenter = userLatLng;
+            }
+            else {
+                var relevantLatitudes = [currentUserPosition.latitude, closestMarker.latitude()],
+                    relevantLongitudes = [currentUserPosition.longitude, closestMarker.longitude()];
+                zoomLevel = this.calculateAppropriateZoomLevel(mapDimentions, relevantLatitudes, relevantLongitudes);
+                mapCenter = this.calculateCenterOfMarkers(relevantLatitudes, relevantLongitudes);
+            }
+
+            map.setZoom(zoomLevel);
+            map.setCenter(mapCenter);
         },
         render: function() {
             var mapOptions = {
