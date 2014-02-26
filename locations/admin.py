@@ -20,7 +20,8 @@ class LocationDetailsSectionInline(admin.TabularInline):
 
 
 class MealLocationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'address')
+    list_display = ('name', 'address', 'active')
+    list_editable = ('active',)
     inlines = (LocationDetailsSectionInline, )
 
     class Media:
