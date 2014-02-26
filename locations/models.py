@@ -10,6 +10,9 @@ class MealLocation(models.Model):
     geolocation = map_fields.GeoLocationField(max_length=50)
     notes = models.TextField(blank=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class LocationDetailSection(models.Model):
     meal_location = models.ForeignKey(MealLocation, related_name='location_detail_sections')
