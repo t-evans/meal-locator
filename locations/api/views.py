@@ -21,3 +21,7 @@ class BaseAPIView(BaseAPIMixin, APIView):
 class MealLocationAPIView(BaseAPIMixin, ListAPIView):
     model = MealLocation
     model_serializer_class = MealLocationSerializer
+
+    def get_queryset(self):
+        queryset = self.model.objects.filter(active=True)
+        return queryset
