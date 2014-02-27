@@ -41,6 +41,13 @@
 i.fa {
     color: green;
 }
+.icon-link {
+	float: left;
+	width: 31px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	text-align: center;
+}
 
 
 /***************************************

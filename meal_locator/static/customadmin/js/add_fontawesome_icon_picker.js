@@ -41,7 +41,6 @@
             var iconDef = awesomeIconsArray[i],
                 $iconLink = $('<a class="icon-link" href="javascript:void(0);"></a>'),
                 $icon = $('<i></i>');
-            $iconLink.css('padding', '5px');
             $icon.addClass(iconDef.cssClass);
             $iconLink.append($icon);
             $dialog.append($iconLink);
