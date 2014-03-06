@@ -1,14 +1,17 @@
 from django.db import models
+from django.contrib.gis.db import models as gis_models
 from django_google_maps import fields as map_fields
 from django.utils.translation import ugettext_lazy as _
 
 
-class MealLocation(models.Model):
+class MealLocation(gis_models.Model):
     name = models.CharField(max_length=60)
     active = models.BooleanField(default=True)
     address = map_fields.AddressField(max_length=100)
-    geolocation = map_fields.GeoLocationField(max_length=50)
+    geolocation = gis_models.PointField()
     notes = models.TextField(blank=True)
+
+    objects = gis_models.GeoManager()
 
     def __unicode__(self):
         return self.name
