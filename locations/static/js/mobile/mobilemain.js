@@ -74,8 +74,10 @@ function( $, Backbone, app, HomeView, FastClick) {
     }
 
     $(function() {
-        FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
-        var homeView = new HomeView();
+        //var fastclickDomElement = document.body; // Attaching FastClick to document.body breaks the geocomplete widget.
+        var fastclickDomElement = $('#page-content').get(0);
+        window.fastclick = FastClick.attach(fastclickDomElement); // Removes the 300ms delay for the onclick event.
+
         var homeView = new HomeView().render();
         //$('#page-content').html(homeView.render().$el);
     });
