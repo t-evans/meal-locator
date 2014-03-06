@@ -30,7 +30,8 @@ requirejs.config({
         'backbone': {
             deps: ["underscore", "jquery"],
             exports: "Backbone"
-        }
+        },
+        'lib/jockey.alerts': ["lib/jockey"]
     }
 });
 
@@ -60,6 +61,17 @@ require([
 function( $, Backbone, app, HomeView, FastClick) {
     window.app = app;
     app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') === 'true' || false;
+    app.displayAlert = function(msg, callback) {
+        // Displays a native alert, if available. Otherwise, displays a regular JS alert
+        if (app.isRunningInWrapperApp) {
+            Jockey.alert(msg, callback);
+        }
+        else {
+            alert(msg);
+            if (typeof callback !== 'undefined')
+                callback();
+        }
+    }
 
     $(function() {
         FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
