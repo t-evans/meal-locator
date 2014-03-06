@@ -18,17 +18,24 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
     return Backbone.View.extend({
         id: 'home-page',
         events: {
-            'click #use-current-location': 'lookUpUserCurrentLocation',
-            'click #use-specific-location': 'lookUpLocationByEnteredAddress'
+            'click #btn-use-specific-location': 'lookUpGeolocationByEnteredAddress'
         },
         $mapInstructions: $('<div id="map-instructions">Pick a summer feeding side below to find some delicious food!</div>'),
+        userGeolocation: null,
         initialize: function(options) {
             var MealLocations = Backbone.Collection.extend({
                 model: MealLocation,
                 baseUrl: '/api/locations/meals/'
-            });
+            }),
+            that = this;
             this.mealLocations = new MealLocations([]);
             this.mealLocations.on('sync', this.renderMap, this);
+
+            Jockey.on("updateUserLocation", function(position) {
+                Jockey.off('updateUserLocation');
+                that.userGeolocation = '' + position.latitude + ',' + position.longitude;
+                that.lookUpAddressByGeolocation(position);
+            });
         },
         template: _.template(templateText),
         render: function() {
@@ -82,12 +89,34 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
             });
         },
         geocoder: new google.maps.Geocoder(),
-        lookUpUserCurrentLocation: function() {
+        useCurrentUserLocation: function() {
+            app.selectedUserAddress = this.userAddress;
+            app.selectedUserGeolocation = this.userGeolocation;
+            this.fetchMealLocationsNearGeolocation(app.selectedUserGeolocation);
         },
-        lookUpLocationByEnteredAddress: function() {
+        lookUpAddressByGeolocation: function(geolocation) {
+            var that = this,
+                latLng = new google.maps.LatLng(geolocation.latitude, geolocation.longitude);
+            this.geocoder.geocode({'latLng': latLng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK && results[0]) {
+                    that.userAddress = results[0].formatted_address;
+                }
+                else
+                    that.userAddress = '' + geolocation.latitude + ',' + geolocation.longitude;
+                that.$('#user-current-address').html(that.userAddress);
+                var $useCurrLocationBtn = that.$('#btn-use-current-location');
+                $useCurrLocationBtn.removeClass('disabled');
+                $useCurrLocationBtn.click(function() {
+                    that.useCurrentUserLocation()
+                });
+            });
+        },
+        lookUpGeolocationByEnteredAddress: function() {
             var that = this,
                 address = that.$('#address').val(),
                 geolocation = null;
+            Jockey.off('updateUserLocation');
+            app.selectedUserAddress = address;
             that.geocoder.geocode({'address': address}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
                     var result = results[0];
@@ -105,6 +134,7 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                     }, 'Address not recognized.');
                 }
                 else {
+                    app.selectedUserGeolocation = geolocation;
                     that.fetchMealLocationsNearGeolocation(geolocation);
                 }
             });

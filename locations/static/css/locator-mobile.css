@@ -159,11 +159,29 @@ div.background {
     cursor: pointer;
 }
 
+.btn-large.disabled {
+    background-color: #B7C8B5;
+    cursor: default;
+}
+
+.mini-spinner {
+    height: 15px;
+    width: 15px;
+    float: left;
+    margin: 0 5px 0 5px;
+    background: transparent url('../images/mobile/ajax-loader-small.gif') no-repeat;
+}
+
 /**********************************************************
  * Location Selector
  **********************************************************/
 .location-selector {
     padding: 10px 10px 10px 10px;
+}
+.location-selector #user-current-address {
+    color: lightslategray;
+    font-size: 12px;
+    margin: 0 0 5px 5px;
 }
 .location-selector .button-separator {
     width: 100%;
