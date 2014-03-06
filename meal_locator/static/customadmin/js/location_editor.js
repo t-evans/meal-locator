@@ -47,7 +47,6 @@
                     $addressFld.val(addressFieldValueOnPageLoad);
                 })
                 .bind('geocode:dragged', function(event, location) {
-                    var geolocation = '' + location.d + ',' + location.e;
                     $latitudeFld.val(location.d);
                     $longitudeFld.val(location.e);
                 });

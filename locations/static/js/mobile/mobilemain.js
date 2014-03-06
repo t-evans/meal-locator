@@ -61,10 +61,10 @@ require([
 function( $, Backbone, app, HomeView, FastClick) {
     window.app = app;
     app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') === 'true' || false;
-    app.displayAlert = function(msg, callback) {
+    app.displayAlert = function(msg, callback, title) {
         // Displays a native alert, if available. Otherwise, displays a regular JS alert
         if (app.isRunningInWrapperApp) {
-            Jockey.alert(msg, callback);
+            Jockey.alert(msg, callback, title);
         }
         else {
             alert(msg);
@@ -76,6 +76,7 @@ function( $, Backbone, app, HomeView, FastClick) {
     $(function() {
         FastClick.attach(document.body); // Removes the 300ms delay for the onclick event.
         var homeView = new HomeView();
+        var homeView = new HomeView().render();
         //$('#page-content').html(homeView.render().$el);
     });
 });
