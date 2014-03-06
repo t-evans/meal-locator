@@ -32,6 +32,9 @@ div.clear {
     height: 100%;
     width: 100%;
 }
+body {
+    background: #f0f4f5;
+}
 
 div.background {
     /* The background image is here, rather than on the body tag, to get
