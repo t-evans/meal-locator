@@ -3,12 +3,18 @@
         var $addressFld = $('#id_address'),
             addressFieldValueOnPageLoad = $addressFld.val(),
             $geolocationFld = $('#id_geolocation'),
+            $latitudeFld = $('#id_geolocation_0'),
+            $longitudeFld = $('#id_geolocation_1'),
             $map = $('<div id="map_preview" style="width: 500px; height: 300px;"></div>'),
+            mapStartingLatitude = $latitudeFld.val(),
+            mapStartingLongigude = $longitudeFld.val(),
             mapStartingLocation = $geolocationFld.val(),
-            hasInitialAddress = mapStartingLocation != null && mapStartingLocation !== '',
+            hasInitialAddress = mapStartingLatitude != null && mapStartingLatitude !== '' && mapStartingLongigude && mapStartingLongigude !== '',
             userManuallyChangedAddress = false,
             configureMap = function() {
-                if (!mapStartingLocation) {
+                if (hasInitialAddress)
+                    mapStartingLocation = new google.maps.LatLng(mapStartingLatitude, mapStartingLongigude)
+                else {
                     var defaultCenter = new google.maps.LatLng(39.368279,-96.707153);
                     mapStartingLocation = defaultCenter;
                 }
@@ -23,7 +29,7 @@
                     map: '#map_preview',
                     location: mapStartingLocation,
                     mapOptions: {
-                        zoom: 14, // This field is in the documentation, but it is ignored here. Best you can do is programmatically change the zoom level after the map has loaded (see onMapLoaded(), below).
+                        zoom: 16, // This field is in the documentation, but it is ignored here. Best you can do is programmatically change the zoom level after the map has loaded (see onMapLoaded(), below).
                         mapTypeId: google.maps.MapTypeId.HYBRID
                     },
                     markerOptions: {
@@ -31,9 +37,9 @@
                     }
                 })
                 .bind('geocode:result', function(event, result) {
-                    var location = result.geometry.location,
-                        geolocation = '' + location.d + ',' + location.e;
-                    $geolocationFld.val(geolocation);
+                    var location = result.geometry.location;
+                    $latitudeFld.val(location.d);
+                    $longitudeFld.val(location.e);
 
                     // Geocomplete overwrites (on page load) the user-entered address with whatever the pin
                     // is pointed to initially (if anything).  geocomplete then triggers this event.
@@ -42,7 +48,8 @@
                 })
                 .bind('geocode:dragged', function(event, location) {
                     var geolocation = '' + location.d + ',' + location.e;
-                    $geolocationFld.val(geolocation);
+                    $latitudeFld.val(location.d);
+                    $longitudeFld.val(location.e);
                 });
                 var map = $addressFld.geocomplete('map');
                 google.maps.event.addListenerOnce(map, 'idle', function() { // Fired the first time google maps stops loading stuff (see http://stackoverflow.com/questions/832692/how-can-i-check-whether-google-maps-is-fully-loaded).
@@ -50,11 +57,11 @@
                 });
             },
             getGeolocationLatLng = function() {
-                var geolocationStr = $geolocationFld.val(),
+                var latitudeStr = $latitudeFld.val(),
+                    longitudeStr = $longitudeFld.val(),
                     latLng;
-                if (geolocationStr && geolocationStr.length) {
-                    var latlong = geolocationStr.split(',');
-                    latLng = new google.maps.LatLng(latlong[0], latlong[1]);
+                if (latitudeStr && longitudeStr && latitudeStr.length && longitudeStr.length) {
+                    latLng = new google.maps.LatLng(latitudeStr, longitudeStr);
                 }
                 else
                     latLng = null;
