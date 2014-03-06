@@ -17,7 +17,7 @@ class LocationDetailsSectionSerializer(serializers.ModelSerializer):
 class MealLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealLocation
-        fields = ('id', 'name', 'address', 'geolocation', 'latitude', 'longitude', 'location_detail_sections')
-    latitude = fields.FloatField(source='geolocation.lat')
-    longitude = fields.FloatField(source='geolocation.lon')
+        fields = ('id', 'name', 'address', 'latitude', 'longitude', 'location_detail_sections')
+    latitude = fields.FloatField(source='geolocation.y')
+    longitude = fields.FloatField(source='geolocation.x')
     location_detail_sections = LocationDetailsSectionSerializer(many=True)
