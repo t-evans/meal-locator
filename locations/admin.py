@@ -82,24 +82,24 @@ class MapLocationAdmin(admin.ModelAdmin):
             "all": (
                 # For icon picker
                 'css/jquery-ui-dialog.min.css',
-                'css/map-location-editor.css',
+                'map_locations/css/map-location-editor.css',
                 'font_awesome/css/font-awesome.css',
             )
         }
         google_maps_api = 'https://maps.google.com/maps/api/js?sensor=false&libraries=%s&key=%s' \
                           % (settings.ADDITIONAL_GOOGLE_MAPS_LIBRARIES, settings.GOOGLE_API_KEY)
         js = (
-            'customadmin/js/make_jquery_available_to_plugins.js',
+            'map_locations/js/make_jquery_available_to_plugins.js',
             google_maps_api,
-            'customadmin/js/jquery.geocomplete.min.js',
-            'customadmin/js/location_editor.js',
-            'customadmin/js/hide_inline_position_column.js',
+            'map_locations/js/jquery.geocomplete.min.js',
+            'map_locations/js/location_editor.js',
+            'map_locations/js/hide_inline_position_column.js',
 
             # For icon picker
-            'customadmin/js/jquery-ui-dialog.min.js',
-            'customadmin/js/add_fontawesome_icon_picker.js',
+            'map_locations/js/jquery-ui-dialog.min.js',
+            'map_locations/js/add_fontawesome_icon_picker.js',
 
-            'customadmin/js/prevent_enter_backspace.js',
+            'map_locations/js/prevent_enter_backspace.js',
         )
 
 admin.site.register(MapLocation, MapLocationAdmin)
