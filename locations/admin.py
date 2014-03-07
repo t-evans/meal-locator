@@ -2,6 +2,7 @@ from django import forms
 from django.core import validators
 from django.conf import settings
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 from locations.models import *
 
 
@@ -27,8 +28,8 @@ class LatLongField(forms.MultiValueField):
     srid = 4326 # See https://docs.djangoproject.com/en/dev/ref/contrib/gis/model-api/#selecting-an-srid
 
     default_error_messages = {
-        'invalid_latitude' : 'Enter a valid latitude.',
-        'invalid_longitude' : 'Enter a valid longitude.',
+        'invalid_latitude': _('Enter a valid latitude.'),
+        'invalid_longitude': _('Enter a valid longitude.'),
     }
 
     def __init__(self, *args, **kwargs):
