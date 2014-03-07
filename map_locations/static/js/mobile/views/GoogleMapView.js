@@ -112,7 +112,7 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
 //            // If running in the wrapper app, it will ask for location permission separate
 //            // from the site (i.e. if the site asks, BOTH will ask), so we'll just let the
 //            // app control it instead and pass info to the site.
-//            if (!app.isRunningInWrapperApp) {
+//            if (!app.isRunningInMobileApp) {
 //                if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
 //                    that.updateCurrentPositionOnMap(map, pos.coords, mapDimentions);
 //                }, function(error) {

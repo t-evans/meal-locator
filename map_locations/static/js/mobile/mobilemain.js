@@ -60,10 +60,10 @@ require([
 ],
 function( $, Backbone, app, HomeView, FastClick) {
     window.app = app;
-    app.isRunningInWrapperApp = querystringUtils.getValue('isRunningInWrapperApp') === 'true' || false;
+    app.isRunningInMobileApp = querystringUtils.getValue('isRunningInMobileApp') === 'true' || false;
     app.displayAlert = function(msg, callback, title) {
         // Displays a native alert, if available. Otherwise, displays a regular JS alert
-        if (app.isRunningInWrapperApp) {
+        if (app.isRunningInMobileApp) {
             Jockey.alert(msg, callback, title);
         }
         else {

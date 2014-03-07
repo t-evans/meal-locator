@@ -136,7 +136,7 @@ function($, Backbone, _, templateText, mobileTemplateText, locationDetailSection
                     currentUserPosition = this.mapView.getCurrentPosition();
                 if (currentUserPosition)
                     directionsUrl += '&saddr=' + currentUserPosition.toString();
-                if (app.isRunningInWrapperApp)
+                if (app.isRunningInMobileApp)
                     directionsUrl += '&openInNewWindow=true';
                 window.open(directionsUrl, target="_blank");
             }

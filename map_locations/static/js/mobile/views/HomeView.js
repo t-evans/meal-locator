@@ -32,7 +32,7 @@ function($, Backbone, _, app, MapLocation, GoogleMapView, templateText) {
             this.mapLocations = new MapLocations([]);
             this.mapLocations.on('sync', this.renderMap, this);
 
-            if (app.isRunningInWrapperApp) {
+            if (app.isRunningInMobileApp) {
                 // If running in the wrapper app, the app will ask for location permission separate
                 // from the site (i.e. if the site asks, BOTH will ask), so we'll just let the
                 // app control it instead and pass info to the site.
@@ -67,7 +67,7 @@ function($, Backbone, _, app, MapLocation, GoogleMapView, templateText) {
         getMaxMapHeight: function(mapInstructionsHeight) {
             var maxMapHeight = $(window).height() - mapInstructionsHeight;
             if ($.browser.isIosDevice) {
-                if (app.isRunningInWrapperApp) {
+                if (app.isRunningInMobileApp) {
                     maxMapHeight -= 20;
                 }
                 else {
