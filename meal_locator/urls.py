@@ -18,10 +18,10 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
-    url(r'^api/locations/?', include('locations.api.urls')),
+    url(r'^api/locations/?', include('map_locations.api.urls')),
 
     url(r'^$', RedirectView.as_view(url='/locations/')),
-    url(r'^locations/?', include('locations.urls')),
+    url(r'^locations/?', include('map_locations.urls')),
 
     url(r'^robots\.txt$', TextPlainView.as_view(template_name='robots.txt')),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),

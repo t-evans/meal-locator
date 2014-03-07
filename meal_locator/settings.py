@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'south',
     'awesome_bootstrap',
-    'locations',
+    'map_locations',
 )
 
 MIDDLEWARE_CLASSES = (

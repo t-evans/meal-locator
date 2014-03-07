@@ -8,8 +8,8 @@ from rest_framework.renderers import JSONRenderer, JSONPRenderer, BrowsableAPIRe
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from locations.models import MapLocation
-from locations.api.serializers import *
+from map_locations.models import MapLocation
+from map_locations.api.serializers import *
 
 
 class BaseAPIMixin(object):

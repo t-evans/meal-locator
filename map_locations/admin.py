@@ -3,7 +3,7 @@ from django.core import validators
 from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from locations.models import *
+from map_locations.models import *
 
 
 class LatLongWidget(forms.MultiWidget):

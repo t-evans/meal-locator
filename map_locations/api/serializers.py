@@ -5,7 +5,7 @@
 
 from rest_framework import serializers
 from rest_framework import fields
-from locations.models import *
+from map_locations.models import *
 
 
 class LocationDetailsSectionSerializer(serializers.ModelSerializer):
