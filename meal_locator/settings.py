@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'rest_framework',
     'south',
-    'django_google_maps',
     'awesome_bootstrap',
     'locations',
 )

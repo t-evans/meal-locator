@@ -51,6 +51,7 @@ class LatLongField(forms.MultiValueField):
             return ';'.join([srid_str, point_str])
         return None
 
+
 class MealLocationForm(forms.ModelForm):
     geolocation = LatLongField()
 
