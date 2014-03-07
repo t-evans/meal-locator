@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer, JSONPRenderer, BrowsableAPIRe
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from locations.models import MealLocation
+from locations.models import MapLocation
 from locations.api.serializers import *
 
 
@@ -20,14 +20,14 @@ class BaseAPIView(BaseAPIMixin, APIView):
     pass
 
 
-class MealLocationAPIView(BaseAPIMixin, ListAPIView):
-    model = MealLocation
-    model_serializer_class = MealLocationSerializer
+class MapLocationAPIView(BaseAPIMixin, ListAPIView):
+    model = MapLocation
+    model_serializer_class = MapLocationSerializer
 
     def get_queryset(self):
         near = self.request.QUERY_PARAMS.get('near', None)
         if near is None:
-            raise Exception('"near" is a required querysting parameter when looking up meal locations')
+            raise Exception('"near" is a required querysting parameter when looking up map locations')
         else:
             y, x = near.split(',')
             x = float(x)

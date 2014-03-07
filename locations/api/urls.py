@@ -4,5 +4,5 @@ from django.conf import settings
 from locations.api.views import *
 
 urlpatterns = patterns('',
-    url(r'^meals/$', MealLocationAPIView.as_view()),
+    url(r'^active/$', MapLocationAPIView.as_view()),
 )

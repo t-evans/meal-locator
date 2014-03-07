@@ -6,7 +6,7 @@ define([
     'backbone',
     'underscore',
     'app',
-    'models/MealLocation',
+    'models/MapLocation',
     'views/GoogleMapView',
     'text!templates/HomeView.jst',
     'lib/jquery.browser-info',
@@ -14,7 +14,7 @@ define([
     'lib/jockey.alerts',
     'lib/jquery.geocomplete.min'
 ],
-function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
+function($, Backbone, _, app, MapLocation, GoogleMapView, templateText) {
     return Backbone.View.extend({
         id: 'home-page',
         events: {
@@ -24,13 +24,13 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
         userAddress: null,
         userGeolocation: null,
         initialize: function(options) {
-            var MealLocations = Backbone.Collection.extend({
-                model: MealLocation,
-                baseUrl: '/api/locations/meals/'
+            var MapLocations = Backbone.Collection.extend({
+                model: MapLocation,
+                baseUrl: '/api/locations/active/'
             }),
             that = this;
-            this.mealLocations = new MealLocations([]);
-            this.mealLocations.on('sync', this.renderMap, this);
+            this.mapLocations = new MapLocations([]);
+            this.mapLocations.on('sync', this.renderMap, this);
 
             if (app.isRunningInWrapperApp) {
                 // If running in the wrapper app, the app will ask for location permission separate
@@ -87,17 +87,17 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
             $pageContent.html(this.$mapInstructions);
             var mapInstructionsHeight = this.$mapInstructions.outerHeight(),
                 maxMapHeight = this.getMaxMapHeight(mapInstructionsHeight),
-                mealLocationMapView = new GoogleMapView({
-                    markerModels: this.mealLocations.models,
+                googleMapView = new GoogleMapView({
+                    markerModels: this.mapLocations.models,
                     maxHeight: maxMapHeight
                 });
-            $pageContent.append(mealLocationMapView.render().$el);
+            $pageContent.append(googleMapView.render().$el);
             $('body').scrollTop(0);
         },
-        fetchMealLocationsNearSelectedLocation: function () {
+        fetchMapLocationsNearSelectedLocation: function () {
             var that = this;
-            that.mealLocations.url = that.mealLocations.baseUrl + '?near=' + app.selectedLocation.geolocationStr();
-            that.mealLocations.fetch({
+            that.mapLocations.url = that.mapLocations.baseUrl + '?near=' + app.selectedLocation.geolocationStr();
+            that.mapLocations.fetch({
                 error: function () {
                     var $msg = $('<p id="map-instructions">We\'re sorry, we encountered an unexpected error while attempting to retrieve the current meal locations. Click <a href="javascript:void(0);">here</a> to try again.  If the problem persists, please contact support@nutrislice.com.</p>'),
                         $reloadLink = $msg.find('a');
@@ -112,7 +112,7 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
         useCurrentUserLocation: function() {
             app.selectedLocation.address = this.userAddress;
             app.selectedLocation.geolocation = this.userGeolocation;
-            this.fetchMealLocationsNearSelectedLocation();
+            this.fetchMapLocationsNearSelectedLocation();
         },
         lookUpAddressByGeolocation: function(geolocation) {
             var that = this,
@@ -158,7 +158,7 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                 }
                 else {
                     app.selectedLocation.geolocation = geolocation;
-                    that.fetchMealLocationsNearSelectedLocation();
+                    that.fetchMapLocationsNearSelectedLocation();
                 }
             });
         }

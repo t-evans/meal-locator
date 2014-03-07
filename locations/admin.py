@@ -52,7 +52,7 @@ class LatLongField(forms.MultiValueField):
         return None
 
 
-class MealLocationForm(forms.ModelForm):
+class MapLocationForm(forms.ModelForm):
     geolocation = LatLongField()
 
 
@@ -71,18 +71,18 @@ class LocationDetailsSectionInline(admin.TabularInline):
     ordering = ['order']
 
 
-class MealLocationAdmin(admin.ModelAdmin):
+class MapLocationAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'active')
     list_editable = ('active',)
     inlines = (LocationDetailsSectionInline, )
-    form = MealLocationForm
+    form = MapLocationForm
 
     class Media:
         css = {
             "all": (
                 # For icon picker
                 'css/jquery-ui-dialog.min.css',
-                'css/meal-location-editor.css',
+                'css/map-location-editor.css',
                 'font_awesome/css/font-awesome.css',
             )
         }
@@ -102,4 +102,4 @@ class MealLocationAdmin(admin.ModelAdmin):
             'customadmin/js/prevent_enter_backspace.js',
         )
 
-admin.site.register(MealLocation, MealLocationAdmin)
+admin.site.register(MapLocation, MapLocationAdmin)

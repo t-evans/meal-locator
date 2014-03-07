@@ -6,7 +6,7 @@ define([
     'backbone',
     'underscore',
     'app',
-    'views/GoogleMapInfoWindowView',
+    'views/GoogleMapInfoWindowView'
     //'lib/jquery.dark-overlay'
 ],
 function($, Backbone, _, app, GoogleMapInfoWindowView) {
