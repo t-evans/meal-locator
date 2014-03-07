@@ -7,7 +7,6 @@ define([
     'underscore',
     'app',
     'views/GoogleMapInfoWindowView',
-    'lib/jockey'
     //'lib/jquery.dark-overlay'
 ],
 function($, Backbone, _, app, GoogleMapInfoWindowView) {
@@ -34,9 +33,11 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             this.$el.height(this.maxHeight);
             that.extractAllLatitudesAndLongitudes();
 
-            Jockey.on("updateUserLocation", function(payload) {
-                that.updateCurrentPositionOnMap(that.map, payload);
-            });
+//            This is done by HomeView.js now.
+//            Jockey.on("updateUserLocation", function(payload) {
+//                that.updateCurrentPositionOnMap(that.map, payload);
+//            });
+
             this.infoWindowView = new GoogleMapInfoWindowView({mapView: this});
             this.infoWindowView.on('showMobileInfoWindow', this.mobileInfoWindowShown, this);
         },
@@ -105,23 +106,23 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             else
                 return this.currentLocationMarker.getPosition();
         },
-        setCurrentLocationIfPossible: function(map, mapDimentions) {
-            var that = this;
-
-            // If running in the wrapper app, it will ask for location permission separate
-            // from the site (i.e. if the site asks, BOTH will ask), so we'll just let the
-            // app control it instead and pass info to the site.
-            if (!app.isRunningInWrapperApp) {
-                if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
-                    that.updateCurrentPositionOnMap(map, pos.coords, mapDimentions);
-                }, function(error) {
-                    // Map is already rendered w/o the position. Nothing to do...
-                    console.log("Error while retrieving user's current location: " + error);
-                }, {
-                    timeout: 10000
-                });
-            }
-        },
+//        setCurrentLocationIfPossible: function(map, mapDimentions) {
+//            var that = this;
+//
+//            // If running in the wrapper app, it will ask for location permission separate
+//            // from the site (i.e. if the site asks, BOTH will ask), so we'll just let the
+//            // app control it instead and pass info to the site.
+//            if (!app.isRunningInWrapperApp) {
+//                if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+//                    that.updateCurrentPositionOnMap(map, pos.coords, mapDimentions);
+//                }, function(error) {
+//                    // Map is already rendered w/o the position. Nothing to do...
+//                    console.log("Error while retrieving user's current location: " + error);
+//                }, {
+//                    timeout: 10000
+//                });
+//            }
+//        },
         getAverageValues: function(arr) {
             if (!arr || arr.length === 0)
                 return 0;
@@ -233,7 +234,8 @@ function($, Backbone, _, app, GoogleMapInfoWindowView) {
             this.map = map;
             this.addMarkers(this.markerModels, map);
             map.setZoom(this.calculateAppropriateZoomLevel(mapDimentions));
-            this.setCurrentLocationIfPossible(map, mapDimentions);
+            //this.setCurrentLocationIfPossible(map, mapDimentions);
+            this.updateCurrentPositionOnMap(map, app.selectedLocation.geolocation, mapDimentions);
             return this;
         },
         mobileInfoWindowShown: function() {

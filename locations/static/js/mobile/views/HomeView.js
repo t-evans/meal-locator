@@ -21,6 +21,7 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
             'click #btn-use-specific-location': 'lookUpGeolocationByEnteredAddress'
         },
         $mapInstructions: $('<div id="map-instructions">Pick a summer feeding side below to find some delicious food!</div>'),
+        userAddress: null,
         userGeolocation: null,
         initialize: function(options) {
             var MealLocations = Backbone.Collection.extend({
@@ -31,11 +32,27 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
             this.mealLocations = new MealLocations([]);
             this.mealLocations.on('sync', this.renderMap, this);
 
-            Jockey.on("updateUserLocation", function(position) {
-                Jockey.off('updateUserLocation');
-                that.userGeolocation = '' + position.latitude + ',' + position.longitude;
-                that.lookUpAddressByGeolocation(position);
-            });
+            if (app.isRunningInWrapperApp) {
+                // If running in the wrapper app, the app will ask for location permission separate
+                // from the site (i.e. if the site asks, BOTH will ask), so we'll just let the
+                // app control it instead and pass info to the site.
+                Jockey.on("updateUserLocation", function(position) {
+                    Jockey.off('updateUserLocation');
+                    that.userGeolocation = position;
+                    that.lookUpAddressByGeolocation(position);
+                });
+            }
+            else {
+                if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+                    that.userGeolocation = pos.coords;
+                    that.lookUpAddressByGeolocation(pos.coords);
+                }, function(error) {
+                    // Map is already rendered w/o the position. Nothing to do...
+                    console.log("Error while retrieving user's current location: " + error);
+                }, {
+                    timeout: 10000
+                });
+            }
         },
         template: _.template(templateText),
         render: function() {
@@ -65,6 +82,8 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
         },
         renderMap: function() {
             var $pageContent = $('#page-content');
+            this.$mapInstructions.html('Showing meal locations near')
+            this.$mapInstructions.append('<div class="selected-address">' + app.selectedLocation.address.replace(/,\s?/, '<br>') + '</div>');
             $pageContent.html(this.$mapInstructions);
             var mapInstructionsHeight = this.$mapInstructions.outerHeight(),
                 maxMapHeight = this.getMaxMapHeight(mapInstructionsHeight),
@@ -73,10 +92,11 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                     maxHeight: maxMapHeight
                 });
             $pageContent.append(mealLocationMapView.render().$el);
+            $('body').scrollTop(0);
         },
-        fetchMealLocationsNearGeolocation: function (geolocation) {
+        fetchMealLocationsNearSelectedLocation: function () {
             var that = this;
-            that.mealLocations.url = that.mealLocations.baseUrl + '?near=' + geolocation;
+            that.mealLocations.url = that.mealLocations.baseUrl + '?near=' + app.selectedLocation.geolocationStr();
             that.mealLocations.fetch({
                 error: function () {
                     var $msg = $('<p id="map-instructions">We\'re sorry, we encountered an unexpected error while attempting to retrieve the current meal locations. Click <a href="javascript:void(0);">here</a> to try again.  If the problem persists, please contact support@nutrislice.com.</p>'),
@@ -90,9 +110,9 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
         },
         geocoder: new google.maps.Geocoder(),
         useCurrentUserLocation: function() {
-            app.selectedUserAddress = this.userAddress;
-            app.selectedUserGeolocation = this.userGeolocation;
-            this.fetchMealLocationsNearGeolocation(app.selectedUserGeolocation);
+            app.selectedLocation.address = this.userAddress;
+            app.selectedLocation.geolocation = this.userGeolocation;
+            this.fetchMealLocationsNearSelectedLocation();
         },
         lookUpAddressByGeolocation: function(geolocation) {
             var that = this,
@@ -107,7 +127,7 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                 var $useCurrLocationBtn = that.$('#btn-use-current-location');
                 $useCurrLocationBtn.removeClass('disabled');
                 $useCurrLocationBtn.click(function() {
-                    that.useCurrentUserLocation()
+                    that.useCurrentUserLocation();
                 });
             });
         },
@@ -116,13 +136,16 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                 address = that.$('#address').val(),
                 geolocation = null;
             Jockey.off('updateUserLocation');
-            app.selectedUserAddress = address;
+            app.selectedLocation.address = address;
             that.geocoder.geocode({'address': address}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
                     var result = results[0];
                     if (result && result.geometry && result.geometry.location) {
                         var latlng = result.geometry.location,
-                            geolocation = '' + latlng.d + ',' + latlng.e;
+                            geolocation = {
+                                'latitude': latlng.d,
+                                'longitude': latlng.e
+                            };
                     }
                 }
                 if (typeof geolocation === 'undefined') {
@@ -134,8 +157,8 @@ function($, Backbone, _, app, MealLocation, GoogleMapView, templateText) {
                     }, 'Address not recognized.');
                 }
                 else {
-                    app.selectedUserGeolocation = geolocation;
-                    that.fetchMealLocationsNearGeolocation(geolocation);
+                    app.selectedLocation.geolocation = geolocation;
+                    that.fetchMealLocationsNearSelectedLocation();
                 }
             });
         }

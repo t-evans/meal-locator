@@ -71,6 +71,17 @@ function( $, Backbone, app, HomeView, FastClick) {
             if (typeof callback !== 'undefined')
                 callback();
         }
+    };
+    app.selectedLocation = {
+        address: null,
+        geolocation: null,
+        geolocationStr: function() {
+            if (this.geolocation) {
+                return '' + this.geolocation.latitude + ',' + this.geolocation.longitude;
+            }
+            else
+                return '';
+        }
     }
 
     $(function() {
