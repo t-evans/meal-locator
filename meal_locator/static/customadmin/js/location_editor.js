@@ -1,7 +1,11 @@
 (function($) {
     $(function(){
-        var $addressFld = $('#id_address'),
-            addressFieldValueOnPageLoad = $addressFld.val(),
+        var $addressFld = $('#id_address');
+        if (!$addressFld.length) {
+            // Must be on the list page, rather than the editor.
+            return;
+        }
+        var addressFieldValueOnPageLoad = $addressFld.val(),
             $geolocationFld = $('#id_geolocation'),
             $latitudeFld = $('#id_geolocation_0'),
             $longitudeFld = $('#id_geolocation_1'),
