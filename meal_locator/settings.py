@@ -145,4 +145,4 @@ GRAPPELLI_ADMIN_TITLE = 'Nutrislice Summer Feeding'
 
 
 GOOGLE_API_KEY = 'AIzaSyDuV-Jyz8N6b1fVUVCa1EnbPzgeCs9J5_o'
-ADDITIONAL_GOOGLE_MAPS_LIBRARIES = 'places' # Makes address autocomplete available to the django-google-maps app
+ADDITIONAL_GOOGLE_MAPS_LIBRARIES = 'places' # Makes address autocomplete available to the admin
