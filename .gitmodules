@@ -1,0 +1,3 @@
+[submodule "map_locations"]
+	path = map_locations
+	url = git@bitbucket.org:nutrislice/map-locations.git
