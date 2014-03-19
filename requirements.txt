@@ -4,6 +4,7 @@ dj-database-url==0.2.2
 South==0.8.4
 psycopg2==2.5.2
 django-grappelli==2.5.1
+git+https://github.com/t-evans/django-model-diff.git#egg=django-model-diff
 
 # A Django app for including twitter bootstrap and font awesome (https://pypi.python.org/pypi/django-awesome-bootstrap/).
 django-awesome-bootstrap==3.1.0
